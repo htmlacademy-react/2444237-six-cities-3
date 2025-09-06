@@ -1,7 +1,7 @@
 # Личный проект «Шесть городов»
 
 * Студент: [Владимир Бабич](https://up.htmlacademy.ru/react-individual/3/user/2444237).
-* Наставник: `Неизвестно`.
+* Наставник: [Алексей Хабиров](https://htmlacademy.ru/profile/alex_khab).
 
 ---
 
