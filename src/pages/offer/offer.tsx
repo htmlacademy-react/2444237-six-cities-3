@@ -1,11 +1,8 @@
 import { useParams } from 'react-router-dom';
+import Card from '../../components/card/card';
 
-type OfferProps = {
-  children: React.ReactNode;
-}
-const Offer = (props: OfferProps) => {
+const Offer = () => {
   const params = useParams();
-  const {children} = props;
   return (
     <main className="page__main page__main--offer">
       <section className="offer">
@@ -283,7 +280,11 @@ const Offer = (props: OfferProps) => {
         <section className="near-places places">
           <h2 className="near-places__title">Other places in the neighbourhood</h2>
           <div className="near-places__list places__list">
-            {children}
+            <Card image="img/apartment-01.jpg" value={120} width={80} name="Beautiful &amp; luxurious apartment at great location" type="Apartment" />
+            <Card image="img/room.jpg" value={80} width={80} name="Wood and stone place" type="Room" />
+            <Card image="img/apartment-02.jpg" value={132} width={80} name="Canal View Prinsengracht" type="Apartment" />
+            <Card image="img/apartment-03.jpg" value={180} width={100} name="Nice, cozy, warm big bed apartment" type="Apartment" />
+            <Card image="img/room.jpg" value={80} width={80} name="Wood and stone place" type="Room" />
           </div>
         </section>
       </div>
