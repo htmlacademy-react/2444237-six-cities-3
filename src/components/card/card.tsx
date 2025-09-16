@@ -1,4 +1,3 @@
-
 type CardProps = {
   image: string;
   value: number;

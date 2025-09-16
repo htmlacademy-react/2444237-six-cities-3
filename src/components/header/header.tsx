@@ -1,10 +1,11 @@
+import { Link } from 'react-router-dom';
 
 const Header = () : JSX.Element => (
   <header className="header">
     <div className="container">
       <div className="header__wrapper">
         <div className="header__left">
-          <a className="header__logo-link" href="main.html">
+          <Link className="header__logo-link" to="/">
             <img
               className="header__logo"
               src="img/logo.svg"
@@ -12,7 +13,7 @@ const Header = () : JSX.Element => (
               width={81}
               height={41}
             />
-          </a>
+          </Link>
         </div>
         <nav className="header__nav">
           <ul className="header__nav-list">
@@ -26,9 +27,9 @@ const Header = () : JSX.Element => (
               </a>
             </li>
             <li className="header__nav-item">
-              <a className="header__nav-link" href="#">
+              <Link className="header__nav-link" to="login">
                 <span className="header__signout">Sign out</span>
-              </a>
+              </Link>
             </li>
           </ul>
         </nav>
