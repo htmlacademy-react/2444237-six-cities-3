@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom';
+import { AppRoute } from '../../const';
 
 const Header = () : JSX.Element => (
   <header className="header">
     <div className="container">
       <div className="header__wrapper">
         <div className="header__left">
-          <Link className="header__logo-link" to="/">
+          <Link className="header__logo-link" to={AppRoute.Main}>
             <img
               className="header__logo"
               src="img/logo.svg"
@@ -27,7 +28,7 @@ const Header = () : JSX.Element => (
               </a>
             </li>
             <li className="header__nav-item">
-              <Link className="header__nav-link" to="login">
+              <Link className="header__nav-link" to={AppRoute.Login}>
                 <span className="header__signout">Sign out</span>
               </Link>
             </li>
