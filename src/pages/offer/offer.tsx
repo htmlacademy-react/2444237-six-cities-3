@@ -1,7 +1,6 @@
-type OfferProps = {
-  children: React.ReactNode;
-}
-const Offer = ({children}: OfferProps) => (
+import Card from '../../components/card/card';
+
+const Offer = () => (
   <main className="page__main page__main--offer">
     <section className="offer">
       <div className="offer__gallery-container container">
@@ -53,7 +52,7 @@ const Offer = ({children}: OfferProps) => (
           </div>
           <div className="offer__name-wrapper">
             <h1 className="offer__name">
-            Beautiful &amp; luxurious studio at great location
+              Beautiful & luxurious studio at great location
             </h1>
             <button className="offer__bookmark-button button" type="button">
               <svg className="offer__bookmark-icon" width={31} height={33}>
@@ -278,12 +277,15 @@ const Offer = ({children}: OfferProps) => (
       <section className="near-places places">
         <h2 className="near-places__title">Other places in the neighbourhood</h2>
         <div className="near-places__list places__list">
-          {children}
+          <Card image="img/apartment-01.jpg" value={120} width={80} name="Beautiful &amp; luxurious apartment at great location" type="Apartment" />
+          <Card image="img/room.jpg" value={80} width={80} name="Wood and stone place" type="Room" />
+          <Card image="img/apartment-02.jpg" value={132} width={80} name="Canal View Prinsengracht" type="Apartment" />
+          <Card image="img/apartment-03.jpg" value={180} width={100} name="Nice, cozy, warm big bed apartment" type="Apartment" />
+          <Card image="img/room.jpg" value={80} width={80} name="Wood and stone place" type="Room" />
         </div>
       </section>
     </div>
   </main>
-
 );
 
 export default Offer;
