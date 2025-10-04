@@ -1,5 +1,4 @@
-
-const Tabs = () : JSX.Element => (
+const Tabs = (): JSX.Element => (
   <div className="tabs">
     <section className="locations container">
       <ul className="locations__list tabs__list">
@@ -36,6 +35,6 @@ const Tabs = () : JSX.Element => (
       </ul>
     </section>
   </div>
-);
+)
 
-export default Tabs;
+export default Tabs

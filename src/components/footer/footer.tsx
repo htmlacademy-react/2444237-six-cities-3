@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom';
-import { AppRoute } from '../../const';
+import { Link } from 'react-router-dom'
+import { AppRoute } from '../../const'
 
-const Footer = () : JSX.Element => (
+const Footer = (): JSX.Element => (
   <footer className="footer">
     <Link className="footer__logo-link" to={AppRoute.Main}>
       <img
@@ -13,6 +13,6 @@ const Footer = () : JSX.Element => (
       />
     </Link>
   </footer>
-);
+)
 
-export default Footer;
+export default Footer
