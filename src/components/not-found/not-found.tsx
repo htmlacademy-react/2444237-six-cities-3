@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
-import Header from '../header/header'
+import Header from '@/components/header/header'
 import styles from './not-found.module.css'
-import { AppRoute } from '../../const'
+import { AppRoute } from '@/const'
 
 const NotFound = (): JSX.Element => (
   <>

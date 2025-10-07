@@ -1,8 +1,10 @@
 import { useParams } from 'react-router-dom'
-import ReviewForm from '../../components/review-form/review-form'
-import { Review } from '../../types/reviews'
-import { Offer as TypeOffer } from '../../types/offers'
-import OffersList from '../../components/offers-list/offers-list'
+import ReviewForm from '@/components/review-form/review-form'
+import { Review } from '@/types/reviews'
+import { Offer as TypeOffer } from '@/types/offers'
+import Card from '@/components/card/card'
+import { ClassNames } from '@/const'
+import { getRatingPercent } from '@/utils'
 
 type OfferProps = {
   offers: TypeOffer[]
@@ -204,7 +206,20 @@ const Offer = ({ reviews, offers }: OfferProps) => {
             Other places in the neighbourhood
           </h2>
           <div className="near-places__list places__list">
-            <OffersList listOffers={offersExtra} />
+            {offersExtra.map((item) => (
+              <Card
+                key={item.id}
+                image={item.previewImage}
+                price={item.price}
+                rating={getRatingPercent(item.rating)}
+                name={item.title}
+                type={item.type}
+                className={ClassNames.near}
+                width="260"
+                height="200"
+                view="near"
+              />
+            ))}
           </div>
         </section>
       </div>

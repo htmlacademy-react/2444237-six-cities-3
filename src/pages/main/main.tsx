@@ -1,8 +1,9 @@
-import Header from '../../components/header/header'
-import Tabs from '../../components/tabs/tabs'
-import Sort from '../../components/sort/sort'
-import { Offer } from '../../types/offers'
-import OffersList from '../../components/offers-list/offers-list'
+import Header from '@/components/header/header'
+import Tabs from '@/components/tabs/tabs'
+import Sort from '@/components/sort/sort'
+import { Offer } from '@/types/offers'
+import OffersList from '@/components/offers-list/offers-list'
+import Map from '@/components/map/map'
 
 type MainProps = {
   offers: Offer[]
@@ -25,7 +26,7 @@ const Main = ({ offers }: MainProps): JSX.Element => (
             </div>
           </section>
           <div className="cities__right-section">
-            <section className="cities__map map"></section>
+            <Map className="cities__map map" />
           </div>
         </div>
       </div>
