@@ -6,19 +6,20 @@ import { getRatingPercent } from '@/utils'
 
 type OffersListProps = {
   listOffers: Offer[]
+  onMouseEnter: (id: string) => void
 }
 
-const OffersList = ({ listOffers }: OffersListProps) => {
-  const [activeOfferId, setActiveOfferId] = useState<string | null>(null)
+const OffersList = ({ listOffers, onMouseEnter }: OffersListProps) => {
+  const [, setActiveOfferId] = useState<string | null>(null)
 
   const handleMouseEnter = (id: string) => {
-    setActiveOfferId(id)
+    onMouseEnter(id)
   }
 
   const handleMouseLeave = () => {
     setActiveOfferId(null)
     // eslint-disable-next-line no-console
-    console.log(activeOfferId)
+    // console.log(activeOfferId)
   }
   return listOffers.map((item) => (
     <Card
