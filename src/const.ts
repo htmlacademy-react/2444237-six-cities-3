@@ -6,8 +6,6 @@ export enum AppRoute {
   NotFound = '*',
 }
 
-export const OFFER_URL = '/offer/'
-
 export enum AuthorizationStatus {
   Auth = 'AUTH',
   NoAuth = 'NO_AUTH',

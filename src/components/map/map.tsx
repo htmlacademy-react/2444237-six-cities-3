@@ -15,13 +15,13 @@ type MapProps = {
 const defaultCustomIcon = new Icon({
   iconUrl: URL_MARKER_DEFAULT,
   iconSize: [40, 40],
-  iconAnchor: [20, 39],
+  iconAnchor: [23, 39],
 })
 
 const currentCustomIcon = new Icon({
   iconUrl: URL_MARKER_CURRENT,
   iconSize: [40, 40],
-  iconAnchor: [20, 39],
+  iconAnchor: [23, 39],
 })
 
 const Map = ({ className, city, offers, activeOfferId }: MapProps) => {

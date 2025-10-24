@@ -1,7 +1,8 @@
-import { OfferCardClassNames, OFFER_URL } from '@/const'
+import { AppRoute, OfferCardClassNames } from '@/const'
 import cn from 'classnames'
 import FavoriteButton from '@/components/favorite-button/favorite-button'
-import { Link } from 'react-router-dom'
+import { generatePath, Link } from 'react-router-dom'
+import { ImageClassWrapper } from './const'
 
 type CardProps = {
   id: string
@@ -46,51 +47,24 @@ const Card = ({
       onMouseEnter={handleOnMouseEnter}
       onMouseLeave={handleOnMouseLeave}
     >
-      {view === 'list' && (
-        <div className="cities__image-wrapper place-card__image-wrapper">
-          <Link to={`${OFFER_URL}${id}`}>
-            <img
-              className="place-card__image"
-              src={image}
-              width={width}
-              height={height}
-              alt="Place image"
-            />
-          </Link>
+      <div className={`${ImageClassWrapper[view]} place-card__image-wrapper`}>
+        <Link to={generatePath(AppRoute.Offer, { id: `${id}` })}>
+          <img
+            className="place-card__image"
+            src={image}
+            width={width}
+            height={height}
+            alt="Place image"
+          />
+        </Link>
+      </div>
+
+      {view === 'favorites' && (
+        <div className="place-card__mark">
+          {isPremium && <span>Premium</span>}
         </div>
       )}
 
-      {view === 'near' && (
-        <div className="near-places__image-wrapper place-card__image-wrapper">
-          <Link to={`${OFFER_URL}${id}`}>
-            <img
-              className="place-card__image"
-              src={image}
-              width={width}
-              height={height}
-              alt="Place image"
-            />
-          </Link>
-        </div>
-      )}
-      {view === 'favorites' && (
-        <div className="place-card__mark">
-          <span>{isPremium ? 'Premium' : ''}</span>
-        </div>
-      )}
-      {view === 'favorites' && (
-        <div className="favorites__image-wrapper place-card__image-wrapper">
-          <Link to={`${OFFER_URL}${id}`}>
-            <img
-              className="place-card__image"
-              src={image}
-              width={width}
-              height={height}
-              alt="Place image"
-            />
-          </Link>
-        </div>
-      )}
       <div
         className={`${cn({
           'favorites__card-info': view === 'favorites',

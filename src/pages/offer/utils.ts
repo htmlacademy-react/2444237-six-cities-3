@@ -17,5 +17,5 @@ export const getNearOffers = (offer: Offer): Offer[] => {
 }
 
 export function getRatingPercent(rating: number): number {
-  return (rating * 100) / 5
+  return (rating / 5) * 100
 }
