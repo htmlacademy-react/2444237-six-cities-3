@@ -2,8 +2,8 @@ import Card from '@/components/card/card'
 import Footer from '@/components/footer/footer'
 import Header from '@/components/header/header'
 import { Offer } from '@/types/offers'
-import { ClassNames } from '@/const'
-import { getRatingPercent } from '@/utils'
+import { OfferCardClassNames } from '@/const'
+import { getRatingPercent } from '../offer/utils'
 
 type FavoritesProps = {
   items: Offer[]
@@ -42,6 +42,7 @@ const Favorites = ({ items }: FavoritesProps): JSX.Element => {
                     {cityOrders.map((item) => (
                       <Card
                         key={item.id}
+                        id={item.id}
                         image={item.previewImage}
                         price={item.price}
                         rating={getRatingPercent(item.rating)}
@@ -49,7 +50,7 @@ const Favorites = ({ items }: FavoritesProps): JSX.Element => {
                         width="150"
                         height="110"
                         type={item.type}
-                        className={ClassNames.favorites}
+                        className={OfferCardClassNames.favorites}
                         isPremium={item.isPremium}
                         view="favorites"
                       />

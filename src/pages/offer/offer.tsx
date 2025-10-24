@@ -3,8 +3,10 @@ import ReviewForm from '@/components/review-form/review-form'
 import { Review } from '@/types/reviews'
 import { Offer as TypeOffer } from '@/types/offers'
 import Card from '@/components/card/card'
-import { ClassNames } from '@/const'
-import { getRatingPercent } from '@/utils'
+import { OfferCardClassNames } from '@/const'
+import Map from '@/components/map/map'
+
+import { getNearOffers, getRatingPercent } from './utils'
 
 type OfferProps = {
   offers: TypeOffer[]
@@ -13,7 +15,10 @@ type OfferProps = {
 const Offer = ({ reviews, offers }: OfferProps) => {
   const { id } = useParams<{ id: string }>()
   const offer = offers.find((item) => item.id === id)
-  const offersExtra = offers.filter((item) => item.id !== id)
+  if (!offer) return null
+  const nearOffers = getNearOffers(offer)
+  const nearOffersPlusCurrent = [...nearOffers, offer]
+
   const reviewsForOffers = reviews.filter((review) => review.id === id)
   return (
     <main className="page__main page__main--offer">
@@ -198,7 +203,12 @@ const Offer = ({ reviews, offers }: OfferProps) => {
             </section>
           </div>
         </div>
-        <section className="offer__map map" />
+        <Map
+          className="offer__map map"
+          city={offer.city}
+          offers={nearOffersPlusCurrent}
+          activeOfferId={offer?.id}
+        />
       </section>
       <div className="container">
         <section className="near-places places">
@@ -206,15 +216,16 @@ const Offer = ({ reviews, offers }: OfferProps) => {
             Other places in the neighbourhood
           </h2>
           <div className="near-places__list places__list">
-            {offersExtra.map((item) => (
+            {nearOffers.map((item) => (
               <Card
                 key={item.id}
+                id={item.id}
                 image={item.previewImage}
                 price={item.price}
                 rating={getRatingPercent(item.rating)}
                 name={item.title}
                 type={item.type}
-                className={ClassNames.near}
+                className={OfferCardClassNames.near}
                 width="260"
                 height="200"
                 view="near"

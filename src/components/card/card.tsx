@@ -1,8 +1,11 @@
-import { ClassNames } from '@/const'
+import { AppRoute, OfferCardClassNames } from '@/const'
 import cn from 'classnames'
 import FavoriteButton from '@/components/favorite-button/favorite-button'
+import { generatePath, Link } from 'react-router-dom'
+import { ImageClassWrapper } from './const'
 
 type CardProps = {
+  id: string
   image: string
   price: number
   name: string
@@ -10,89 +13,82 @@ type CardProps = {
   width: string
   height: string
   type: string
-  className: ClassNames
+  className: OfferCardClassNames
   isPremium?: boolean
-  onMouseEnter?: () => void
-  onMouseLeave?: () => void
+  onCardAction?: (id: string | null) => void
   view: 'list' | 'favorites' | 'near'
 }
 
-const Card = (props: CardProps): JSX.Element => {
+const Card = ({
+  id,
+  image,
+  price,
+  name,
+  rating,
+  width,
+  height,
+  type,
+  className,
+  isPremium,
+  onCardAction,
+  view,
+}: CardProps): JSX.Element => {
+  const handleOnMouseEnter = () => {
+    onCardAction?.(id)
+  }
+
+  const handleOnMouseLeave = () => {
+    onCardAction?.(null)
+  }
+
   return (
     <article
-      className={`${cn(props.className, 'place-card')}`}
-      onMouseEnter={props.onMouseEnter}
-      onMouseLeave={props.onMouseLeave}
+      className={`${cn(className, 'place-card')}`}
+      onMouseEnter={handleOnMouseEnter}
+      onMouseLeave={handleOnMouseLeave}
     >
-      {props.view === 'list' && (
-        <div className="cities__image-wrapper place-card__image-wrapper">
-          <a href="#">
-            <img
-              className="place-card__image"
-              src={props.image}
-              width={props.width}
-              height={props.height}
-              alt="Place image"
-            />
-          </a>
+      <div className={`${ImageClassWrapper[view]} place-card__image-wrapper`}>
+        <Link to={generatePath(AppRoute.Offer, { id: `${id}` })}>
+          <img
+            className="place-card__image"
+            src={image}
+            width={width}
+            height={height}
+            alt="Place image"
+          />
+        </Link>
+      </div>
+
+      {view === 'favorites' && (
+        <div className="place-card__mark">
+          {isPremium && <span>Premium</span>}
         </div>
       )}
 
-      {props.view === 'near' && (
-        <div className="near-places__image-wrapper place-card__image-wrapper">
-          <a href="#">
-            <img
-              className="place-card__image"
-              src={props.image}
-              width={props.width}
-              height={props.height}
-              alt="Place image"
-            />
-          </a>
-        </div>
-      )}
-      {props.view === 'favorites' && (
-        <div className="place-card__mark">
-          <span>{props.isPremium ? 'Premium' : ''}</span>
-        </div>
-      )}
-      {props.view === 'favorites' && (
-        <div className="favorites__image-wrapper place-card__image-wrapper">
-          <a href="#">
-            <img
-              className="place-card__image"
-              src={props.image}
-              width={props.width}
-              height={props.height}
-              alt="Place image"
-            />
-          </a>
-        </div>
-      )}
       <div
         className={`${cn({
-          'favorites__card-info': props.view === 'favorites',
-          'cities__card-info': props.view === 'list',
+          'favorites__card-info': view === 'favorites',
+          'cities__card-info': view === 'list',
           'place-card__info': true,
         })}`}
       >
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
-            <b className="place-card__price-value">&euro;{props.price}</b>
+            <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <FavoriteButton />
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: `${props.rating}%` }}></span>
+            <span style={{ width: `${rating}%` }}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">{props.name}</a>
+          <a href="#">{name}</a>
         </h2>
-        <p className="place-card__type">{props.type}</p>
+        <p className="place-card__type">{type}</p>
       </div>
     </article>
   )

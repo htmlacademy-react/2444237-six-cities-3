@@ -2,7 +2,7 @@ import Header from '@/components/header/header'
 import Tabs from '@/components/tabs/tabs'
 import Sort from '@/components/sort/sort'
 import { Offer, OfferCity } from '@/types/offers'
-import OffersList from '@/components/offers-list/offers-list'
+import CardList from '@/components/card-list/card-list'
 import Map from '@/components/map/map'
 import { useState } from 'react'
 
@@ -11,12 +11,10 @@ type MainProps = {
 }
 
 const Main = ({ offers }: MainProps): JSX.Element => {
-  const [selectedOfferId, setSelectedOfferId] = useState<string | undefined>(
-    undefined,
-  )
+  const [selectedOfferId, setSelectedOfferId] = useState<string | null>(null)
   const city = offers.find((offer) => offer.city.name === 'Amsterdam')?.city
 
-  const handleOfferListHover = (listOfferItemId: string) => {
+  const handleOfferListHover = (listOfferItemId: string | null) => {
     setSelectedOfferId(listOfferItemId)
   }
 
@@ -33,9 +31,9 @@ const Main = ({ offers }: MainProps): JSX.Element => {
               <b className="places__found">312 places to stay in Amsterdam</b>
               <Sort />
               <div className="cities__places-list places__list tabs__content">
-                <OffersList
+                <CardList
                   listOffers={offers}
-                  onMouseEnter={handleOfferListHover}
+                  onCardAction={handleOfferListHover}
                 />
               </div>
             </section>
