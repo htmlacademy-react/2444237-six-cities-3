@@ -1,40 +1,33 @@
-const Tabs = (): JSX.Element => (
-  <div className="tabs">
-    <section className="locations container">
-      <ul className="locations__list tabs__list">
-        <li className="locations__item">
-          <a className="locations__item-link tabs__item" href="#">
-            <span>Paris</span>
-          </a>
-        </li>
-        <li className="locations__item">
-          <a className="locations__item-link tabs__item" href="#">
-            <span>Cologne</span>
-          </a>
-        </li>
-        <li className="locations__item">
-          <a className="locations__item-link tabs__item" href="#">
-            <span>Brussels</span>
-          </a>
-        </li>
-        <li className="locations__item">
-          <a className="locations__item-link tabs__item tabs__item--active">
-            <span>Amsterdam</span>
-          </a>
-        </li>
-        <li className="locations__item">
-          <a className="locations__item-link tabs__item" href="#">
-            <span>Hamburg</span>
-          </a>
-        </li>
-        <li className="locations__item">
-          <a className="locations__item-link tabs__item" href="#">
-            <span>Dusseldorf</span>
-          </a>
-        </li>
-      </ul>
-    </section>
-  </div>
-)
+import { useAppDispatch, useAppSelector } from '@/hooks'
+import { setCity } from '@/store/action'
+import { cityNames } from './const'
+
+const Tabs = (): JSX.Element => {
+  const dispatch = useAppDispatch()
+  const city = useAppSelector((state) => state.city)
+  const handleClick = (evt: React.MouseEvent<HTMLAnchorElement>) => {
+    dispatch(setCity(evt.currentTarget.dataset.city as string))
+  }
+  return (
+    <div className="tabs">
+      <section className="locations container">
+        <ul className="locations__list tabs__list">
+          {cityNames.map((cityName) => (
+            <li key={cityName}>
+              <a
+                className={`locations__item-link tabs__item ${cityName === city ? 'tabs__item--active' : ''}`}
+                href="#"
+                onClick={handleClick}
+                data-city={cityName}
+              >
+                <span>{cityName}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </div>
+  )
+}
 
 export default Tabs

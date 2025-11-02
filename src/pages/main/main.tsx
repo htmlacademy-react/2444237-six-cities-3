@@ -1,18 +1,19 @@
 import Header from '@/components/header/header'
 import Tabs from '@/components/tabs/tabs'
 import Sort from '@/components/sort/sort'
-import { Offer, OfferCity } from '@/types/offers'
+import { OfferCity } from '@/types/offers'
 import CardList from '@/components/card-list/card-list'
 import Map from '@/components/map/map'
 import { useState } from 'react'
+import { useAppSelector } from '@/hooks'
+import { getCityByName } from '@/components/tabs/utils'
 
-type MainProps = {
-  offers: Offer[]
-}
-
-const Main = ({ offers }: MainProps): JSX.Element => {
+const Main = (): JSX.Element => {
   const [selectedOfferId, setSelectedOfferId] = useState<string | null>(null)
-  const city = offers.find((offer) => offer.city.name === 'Amsterdam')?.city
+  const offers = useAppSelector((state) => state.offers)
+  const city = useAppSelector((state) => state.city)
+  const offerCity = getCityByName(offers, city)
+  const offersLength = offers.length
 
   const handleOfferListHover = (listOfferItemId: string | null) => {
     setSelectedOfferId(listOfferItemId)
@@ -28,7 +29,9 @@ const Main = ({ offers }: MainProps): JSX.Element => {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">312 places to stay in Amsterdam</b>
+              <b className="places__found">
+                {offersLength} places to stay in {city}
+              </b>
               <Sort />
               <div className="cities__places-list places__list tabs__content">
                 <CardList
@@ -40,7 +43,7 @@ const Main = ({ offers }: MainProps): JSX.Element => {
             <div className="cities__right-section">
               <Map
                 className={'cities__map'}
-                city={city as OfferCity}
+                city={offerCity as OfferCity}
                 offers={offers}
                 activeOfferId={selectedOfferId}
               />

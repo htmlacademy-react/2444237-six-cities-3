@@ -14,7 +14,7 @@ const Offer = lazy(() => import('@/pages/offer/offer'))
 const router = createBrowserRouter([
   {
     path: AppRoute.Main,
-    element: <Main offers={offers} />,
+    element: <Main />,
   },
   {
     path: AppRoute.Login,
