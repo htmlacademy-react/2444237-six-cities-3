@@ -9,6 +9,7 @@ function useMap(
 ): Map | null {
   const [map, setMap] = useState<Map | null>(null)
   const isRenderedRef = useRef<boolean>(false)
+
   useEffect(() => {
     if (map) {
       map.setView([city.location.latitude, city.location.longitude], 12)
