@@ -1,5 +1,5 @@
-import { reviewFormRating } from '@/const'
 import { useState } from 'react'
+import { reviewFormRating } from './const'
 
 const ReviewForm = (): JSX.Element => {
   const [formState, setFormState] = useState({

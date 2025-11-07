@@ -11,6 +11,12 @@ function useMap(
   const isRenderedRef = useRef<boolean>(false)
 
   useEffect(() => {
+    if (map) {
+      map.setView([city.location.latitude, city.location.longitude], 12)
+    }
+  }, [map, city])
+
+  useEffect(() => {
     if (mapRef.current !== null && !isRenderedRef.current) {
       const instance = new Map(mapRef.current, {
         center: {
