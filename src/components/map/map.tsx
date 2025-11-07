@@ -1,31 +1,32 @@
-import useMap from '@/hooks/useMap'
-import { Offer, OfferCity } from '@/types/offers'
+import { Offer } from '@/types/offers'
 import cn from 'classnames'
 import { Icon, Marker, layerGroup } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { useEffect, useRef } from 'react'
 import { URL_MARKER_CURRENT, URL_MARKER_DEFAULT } from './const'
+import useMap from '@/hooks/use-map'
+
 type MapProps = {
   className: string
-  city: OfferCity
   offers: Offer[]
   activeOfferId: string | null
 }
 
 const defaultCustomIcon = new Icon({
   iconUrl: URL_MARKER_DEFAULT,
-  iconSize: [40, 40],
-  iconAnchor: [23, 39],
+  iconSize: [27, 39],
+  iconAnchor: [13.5, 39],
 })
 
 const currentCustomIcon = new Icon({
   iconUrl: URL_MARKER_CURRENT,
-  iconSize: [40, 40],
-  iconAnchor: [23, 39],
+  iconSize: [27, 39],
+  iconAnchor: [13.5, 39],
 })
 
-const Map = ({ className, city, offers, activeOfferId }: MapProps) => {
+const Map = ({ className, offers, activeOfferId }: MapProps) => {
   const mapRef = useRef(null)
+  const city = offers[0].city
   const map = useMap(mapRef, city)
 
   useEffect(() => {

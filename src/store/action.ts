@@ -1,4 +1,4 @@
-import { City } from '@/components/tabs/const'
+import { City } from '@/const'
 import { Offer } from '@/types/offers'
 import { createAction } from '@reduxjs/toolkit'
 

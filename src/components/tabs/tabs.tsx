@@ -1,30 +1,27 @@
+import { CITY_NAMES } from '@/const'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import { setCity } from '@/store/action'
-import { City, CITY_NAMES } from './const'
-import clsx from 'clsx'
+import classNames from 'classnames'
 
 const Tabs = (): JSX.Element => {
   const dispatch = useAppDispatch()
   const city = useAppSelector((state) => state.city)
-
-  const handleClick = (cityName: City) => {
-    dispatch(setCity(cityName))
-  }
 
   return (
     <div className="tabs">
       <section className="locations container">
         <ul className="locations__list tabs__list">
           {CITY_NAMES.map((cityName) => (
-            <li key={cityName}>
+            <li className="locations__item" key={cityName}>
               <a
-                className={clsx(
-                  'locations__item-link',
-                  'tabs__item',
-                  cityName === city ? 'tabs__item--active' : '',
-                )}
+                className={classNames('locations__item-link', 'tabs__item', {
+                  'tabs__item--active': city === cityName,
+                })}
                 href="#"
-                onClick={() => handleClick(cityName)}
+                onClick={(e) => {
+                  e.preventDefault()
+                  dispatch(setCity(cityName))
+                }}
               >
                 <span>{cityName}</span>
               </a>

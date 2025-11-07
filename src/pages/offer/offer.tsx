@@ -205,7 +205,6 @@ const Offer = ({ reviews, offers }: OfferProps) => {
         </div>
         <Map
           className="offer__map map"
-          city={offer.city}
           offers={nearOffersPlusCurrent}
           activeOfferId={offer?.id}
         />
