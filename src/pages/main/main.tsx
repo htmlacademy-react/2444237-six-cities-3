@@ -5,19 +5,26 @@ import CardList from '@/components/card-list/card-list'
 import Map from '@/components/map/map'
 import { useState } from 'react'
 import { useAppSelector } from '@/hooks'
-import { getOffersByCity } from '@/utils'
+import { prepareOffers } from '@/utils'
 import MainEmpty from '@/components/main-empty/main-empty'
+import { SORT_TYPES } from '@/components/sort/const'
 
 const Main = (): JSX.Element => {
   const [selectedOfferId, setSelectedOfferId] = useState<string | null>(null)
+  const [activeSortType, setActiveSortType] = useState<string>(SORT_TYPES[0])
+
   const offers = useAppSelector((state) => state.offers)
   const city = useAppSelector((state) => state.city)
-  const filteredOffers = getOffersByCity(offers, city)
+  const offersList = prepareOffers(offers, city, activeSortType)
 
-  const isEmpty = filteredOffers.length === 0
+  const isEmpty = offersList.length === 0
 
   const handleOfferListHover = (listOfferItemId: string | null) => {
     setSelectedOfferId(listOfferItemId)
+  }
+
+  const handleSortChange = (sortType: string) => {
+    setActiveSortType(sortType)
   }
 
   return (
@@ -34,12 +41,15 @@ const Main = (): JSX.Element => {
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
                 <b className="places__found">
-                  {filteredOffers.length} places to stay in {city}
+                  {offersList.length} places to stay in {city}
                 </b>
-                <Sort />
+                <Sort
+                  onSortChange={handleSortChange}
+                  activeSortType={activeSortType}
+                />
                 <div className="cities__places-list places__list tabs__content">
                   <CardList
-                    listOffers={filteredOffers}
+                    listOffers={offersList}
                     onCardAction={handleOfferListHover}
                   />
                 </div>
@@ -47,7 +57,7 @@ const Main = (): JSX.Element => {
               <div className="cities__right-section">
                 <Map
                   className={'cities__map'}
-                  offers={filteredOffers}
+                  offers={offersList}
                   activeOfferId={selectedOfferId}
                 />
               </div>
