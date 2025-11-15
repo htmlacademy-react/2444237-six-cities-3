@@ -28,3 +28,12 @@ export enum OfferCardClassNames {
   favorites = 'favorites__card',
   near = 'near-places__card',
 }
+
+export const SORT_TYPES = {
+  Popular: 'Popular',
+  PriceLowToHigh: 'Price: low to high',
+  PriceHighToLow: 'Price: high to low',
+  TopRatedFirst: 'Top rated first',
+}
+
+export type SortKeys = keyof typeof SORT_TYPES
