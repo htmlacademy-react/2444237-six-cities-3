@@ -1,5 +1,20 @@
 import { Offer, OfferCity } from '@/types/offers'
-import { sortOffers } from './components/sort/utils'
+import { SORT_TYPES } from './const'
+
+export const sortOffers = (offers: Offer[], sortType: string | null) => {
+  switch (sortType) {
+    case SORT_TYPES.Popular:
+      return offers
+    case SORT_TYPES.PriceLowToHigh:
+      return [...offers].sort((a, b) => a.price - b.price)
+    case SORT_TYPES.PriceHighToLow:
+      return [...offers].sort((a, b) => b.price - a.price)
+    case SORT_TYPES.TopRatedFirst:
+      return [...offers].sort((a, b) => b.rating - a.rating)
+    default:
+      throw new Error('Unknown sort type')
+  }
+}
 
 export const getOffersByCity = (offers: Offer[], city: string) => {
   return offers.filter((offer) => offer.city.name === city)

@@ -1,7 +1,7 @@
 import { CITY_NAMES } from '@/const'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import { setCity } from '@/store/action'
-import classNames from 'classnames'
+import cn from 'classnames'
 
 const Tabs = (): JSX.Element => {
   const dispatch = useAppDispatch()
@@ -14,7 +14,7 @@ const Tabs = (): JSX.Element => {
           {CITY_NAMES.map((cityName) => (
             <li className="locations__item" key={cityName}>
               <a
-                className={classNames('locations__item-link', 'tabs__item', {
+                className={cn('locations__item-link', 'tabs__item', {
                   'tabs__item--active': city === cityName,
                 })}
                 href="#"

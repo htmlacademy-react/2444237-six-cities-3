@@ -4,18 +4,24 @@ import Sort from '@/components/sort/sort'
 import CardList from '@/components/card-list/card-list'
 import Map from '@/components/map/map'
 import { useState } from 'react'
-import { useAppSelector } from '@/hooks'
+import { useAppSelector, useAppDispatch } from '@/hooks'
 import { prepareOffers } from '@/utils'
 import MainEmpty from '@/components/main-empty/main-empty'
-import { SORT_TYPES } from '@/components/sort/const'
+import { SORT_TYPES, SortKeys } from '@/const'
+import { setSortType } from '@/store/action'
 
 const Main = (): JSX.Element => {
   const [selectedOfferId, setSelectedOfferId] = useState<string | null>(null)
-  const [activeSortType, setActiveSortType] = useState<string>(SORT_TYPES[0])
+  const [activeSortType, setActiveSortType] = useState<string>(
+    SORT_TYPES.Popular,
+  )
 
   const offers = useAppSelector((state) => state.offers)
   const city = useAppSelector((state) => state.city)
-  const offersList = prepareOffers(offers, city, activeSortType)
+  const sortType = useAppSelector((state) => state.sortType)
+  const dispatch = useAppDispatch()
+
+  const offersList = prepareOffers(offers, city, sortType)
 
   const isEmpty = offersList.length === 0
 
@@ -23,8 +29,9 @@ const Main = (): JSX.Element => {
     setSelectedOfferId(listOfferItemId)
   }
 
-  const handleSortChange = (sortType: string) => {
-    setActiveSortType(sortType)
+  const handleSortChange = (currentSortType: SortKeys) => {
+    setActiveSortType(currentSortType)
+    dispatch(setSortType(currentSortType))
   }
 
   return (
