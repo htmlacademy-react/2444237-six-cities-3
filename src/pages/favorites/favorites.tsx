@@ -21,6 +21,7 @@ const Favorites = ({ items }: FavoritesProps): JSX.Element => {
       }
       return acc
     }, {})
+
   return (
     <div className="page">
       <Header />
