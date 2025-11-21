@@ -4,22 +4,18 @@ import Sort from '@/components/sort/sort'
 import CardList from '@/components/card-list/card-list'
 import Map from '@/components/map/map'
 import { useState } from 'react'
-import { useAppSelector, useAppDispatch } from '@/hooks'
+import { useAppSelector } from '@/hooks'
 import { prepareOffers } from '@/utils'
 import MainEmpty from '@/components/main-empty/main-empty'
-import { SORT_TYPES, SortKeys } from '@/const'
-import { setSortType } from '@/store/action'
+import Loading from '@/components/loading/loading'
 
 const Main = (): JSX.Element => {
   const [selectedOfferId, setSelectedOfferId] = useState<string | null>(null)
-  const [activeSortType, setActiveSortType] = useState<string>(
-    SORT_TYPES.Popular,
-  )
 
-  const offers = useAppSelector((state) => state.offers)
-  const city = useAppSelector((state) => state.city)
-  const sortType = useAppSelector((state) => state.sortType)
-  const dispatch = useAppDispatch()
+  const offers = useAppSelector((state) => state.offers.offers)
+  const city = useAppSelector((state) => state.offers.city)
+  const sortType = useAppSelector((state) => state.offers.sortType)
+  const isLoading = useAppSelector((state) => state.offers.isLoading)
 
   const offersList = prepareOffers(offers, city, sortType)
 
@@ -29,11 +25,6 @@ const Main = (): JSX.Element => {
     setSelectedOfferId(listOfferItemId)
   }
 
-  const handleSortChange = (currentSortType: SortKeys) => {
-    setActiveSortType(currentSortType)
-    dispatch(setSortType(currentSortType))
-  }
-
   return (
     <div className="page page--gray page--main">
       <Header />
@@ -41,7 +32,7 @@ const Main = (): JSX.Element => {
         <h1 className="visually-hidden">Cities</h1>
         <Tabs />
         <div className="cities">
-          {isEmpty ? (
+          {isEmpty && !isLoading ? (
             <MainEmpty />
           ) : (
             <div className="cities__places-container container">
@@ -50,11 +41,9 @@ const Main = (): JSX.Element => {
                 <b className="places__found">
                   {offersList.length} places to stay in {city}
                 </b>
-                <Sort
-                  onSortChange={handleSortChange}
-                  activeSortType={activeSortType}
-                />
+                <Sort activeSortType={sortType} />
                 <div className="cities__places-list places__list tabs__content">
+                  {isLoading && <Loading />}
                   <CardList
                     listOffers={offersList}
                     onCardAction={handleOfferListHover}
@@ -62,11 +51,13 @@ const Main = (): JSX.Element => {
                 </div>
               </section>
               <div className="cities__right-section">
-                <Map
-                  className={'cities__map'}
-                  offers={offersList}
-                  activeOfferId={selectedOfferId}
-                />
+                {!isLoading && !isEmpty && (
+                  <Map
+                    className={'cities__map'}
+                    offers={offersList}
+                    activeOfferId={selectedOfferId}
+                  />
+                )}
               </div>
             </div>
           )}

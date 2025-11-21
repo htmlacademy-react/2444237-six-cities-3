@@ -1,11 +1,11 @@
 import { CITY_NAMES } from '@/const'
 import { useAppDispatch, useAppSelector } from '@/hooks'
-import { setCity } from '@/store/action'
+import { setCity } from '@/store/offers-slice'
 import cn from 'classnames'
 
 const Tabs = (): JSX.Element => {
   const dispatch = useAppDispatch()
-  const city = useAppSelector((state) => state.city)
+  const city = useAppSelector((state) => state.offers.city)
 
   return (
     <div className="tabs">

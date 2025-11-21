@@ -1,22 +1,25 @@
 import { SORT_TYPES, SortKeys } from '@/const'
+import { useAppDispatch } from '@/hooks'
+import { setSortType } from '@/store/offers-slice'
 import { useClickAway } from '@uidotdev/usehooks'
 import cn from 'classnames'
 import { useState } from 'react'
 
 type SortProps = {
   activeSortType: string
-  onSortChange: (sortType: SortKeys) => void
 }
 
-const Sort = ({ activeSortType, onSortChange }: SortProps): JSX.Element => {
+const Sort = ({ activeSortType }: SortProps): JSX.Element => {
   const [isOpen, setIsOpen] = useState(false)
+
+  const dispatch = useAppDispatch()
 
   const ref = useClickAway(() => {
     setIsOpen(false)
   })
 
   const handleSortChange = (sortType: SortKeys) => {
-    onSortChange(sortType)
+    dispatch(setSortType(sortType))
   }
 
   return (
@@ -48,7 +51,7 @@ const Sort = ({ activeSortType, onSortChange }: SortProps): JSX.Element => {
               tabIndex={0}
               onClick={() => {
                 setIsOpen(false)
-                handleSortChange(SORT_TYPES[key] as SortKeys)
+                handleSortChange(key)
               }}
             >
               {SORT_TYPES[key]}

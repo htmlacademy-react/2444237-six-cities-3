@@ -1,22 +1,22 @@
 import { useParams } from 'react-router-dom'
 import ReviewForm from '@/components/review-form/review-form'
 import { Review } from '@/types/reviews'
-import { Offer as TypeOffer } from '@/types/offers'
 import Card from '@/components/card/card'
 import { OfferCardClassNames } from '@/const'
 import Map from '@/components/map/map'
 
 import { getNearOffers, getRatingPercent } from './utils'
+import { useAppSelector } from '@/hooks'
 
 type OfferProps = {
-  offers: TypeOffer[]
   reviews: Review[]
 }
-const Offer = ({ reviews, offers }: OfferProps) => {
+const Offer = ({ reviews }: OfferProps) => {
   const { id } = useParams<{ id: string }>()
+  const offers = useAppSelector((state) => state.offers.offers)
   const offer = offers.find((item) => item.id === id)
   if (!offer) return null
-  const nearOffers = getNearOffers(offer)
+  const nearOffers = getNearOffers(offer, offers)
   const nearOffersPlusCurrent = [...nearOffers, offer]
 
   const reviewsForOffers = reviews.filter((review) => review.id === id)

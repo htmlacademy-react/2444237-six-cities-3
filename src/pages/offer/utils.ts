@@ -1,9 +1,8 @@
 import { Offer } from '@/types/offers'
-import { offers } from '@/mocks/offers'
 
 const MAX_NEAR_OFFERS = 3
 
-export const getNearOffers = (offer: Offer): Offer[] => {
+export const getNearOffers = (offer: Offer, offers: Offer[]): Offer[] => {
   const nearOffers: Offer[] = []
   for (let i = 0; i < offers.length; i++) {
     if (offers[i].id !== offer.id && offers[i].city.name === offer.city.name) {
