@@ -1,8 +1,20 @@
+import { offersSlice } from './offers-slice'
 import { configureStore } from '@reduxjs/toolkit'
-import { reducer } from './reducer'
+import { createApi } from '@/services/api'
+
+const api = createApi()
 
 export const store = configureStore({
-  reducer: reducer,
+  reducer: {
+    offers: offersSlice.reducer,
+  },
+
+  middleware: (getDefualtMiddleware) =>
+    getDefualtMiddleware({
+      thunk: {
+        extraArgument: api,
+      },
+    }),
 })
 
 export type RootState = ReturnType<typeof store.getState>
