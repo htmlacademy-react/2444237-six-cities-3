@@ -1,20 +1,18 @@
 import { Offer } from '@/types/offers'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { CITY_NAMES, City, SortKeys } from '@/const'
 import { Favorite } from '@/types/favorite'
+import { fetchOffersAction } from './api-actions'
 
 type initialState = {
-  city: City
   offers: Offer[]
-  sortType: SortKeys
   isLoading: boolean
+  error: string | null
   favoriteOffers: Favorite[]
 }
 
 const initialState: initialState = {
-  city: CITY_NAMES[0],
   offers: [],
-  sortType: 'Popular',
+  error: null,
   isLoading: false,
   favoriteOffers: [],
 }
@@ -23,34 +21,30 @@ export const offersSlice = createSlice({
   name: 'offers',
   initialState,
   reducers: {
-    setCity(state, action: PayloadAction<City>) {
-      state.city = action.payload
-    },
-
-    loadOffers(state, action: PayloadAction<Offer[]>) {
-      state.offers = action.payload
-    },
-
-    setSortType(state, action: PayloadAction<SortKeys>) {
-      state.sortType = action.payload
-    },
-
-    setLoading(state, action: PayloadAction<boolean>) {
-      state.isLoading = action.payload
-    },
-
     loadFavoriteOffers(state, action: PayloadAction<Favorite[]>) {
       state.favoriteOffers = action.payload
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchOffersAction.pending, (state) => {
+        state.isLoading = true
+        state.error = null
+      })
+      .addCase(
+        fetchOffersAction.fulfilled,
+        (state, action: PayloadAction<Offer[]>) => {
+          state.isLoading = false
+          state.offers = action.payload
+        },
+      )
+      .addCase(fetchOffersAction.rejected, (state, action) => {
+        state.isLoading = false
+        state.error = action.error.message ?? 'Unknown error'
+      })
+  },
 })
 
-export const {
-  setCity,
-  loadOffers,
-  loadFavoriteOffers,
-  setLoading,
-  setSortType,
-} = offersSlice.actions
+export const { loadFavoriteOffers } = offersSlice.actions
 
 export default offersSlice.reducer

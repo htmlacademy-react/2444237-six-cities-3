@@ -20,9 +20,3 @@ export const createApi = (): AxiosInstance => {
 
   return api
 }
-
-// export const loadOffers = async () => {
-//   const response = await axios.get('/offers')
-
-//   return response.data
-// }

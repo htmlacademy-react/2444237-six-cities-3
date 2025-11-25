@@ -2,25 +2,24 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { AppDispatch, RootState } from '.'
 import { AxiosInstance } from 'axios'
 import { Offer } from '@/types/offers'
-import { loadOffers, setLoading } from './offers-slice'
 import { APIRoute } from '@/const'
 
+import router from '@/router/router'
+
+export type ThunkExtraArguments = {
+  api: AxiosInstance
+  router: typeof router
+}
+
 export const fetchOffersAction = createAsyncThunk<
-  void,
+  Offer[],
   undefined,
   {
     dispatch: AppDispatch
     state: RootState
-    extra: AxiosInstance
+    extra: ThunkExtraArguments
   }
->('offers/loadOffers', async (_arg, { dispatch, extra: api }) => {
-  dispatch(setLoading(true))
-  try {
-    const { data } = await api.get<Offer[]>(APIRoute.Offers)
-    dispatch(loadOffers(data))
-  } catch (error) {
-    throw new Error('Failed to load offers')
-  } finally {
-    dispatch(setLoading(false))
-  }
+>('offers/loadOffers', async (_arg, { extra: { api } }) => {
+  const { data } = await api.get<Offer[]>(APIRoute.Offers)
+  return data
 })

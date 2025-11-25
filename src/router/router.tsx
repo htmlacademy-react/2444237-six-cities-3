@@ -3,7 +3,6 @@ import { lazy } from 'react'
 
 import Main from '@/pages/main/main'
 import { AppRoute } from '@/const'
-// import { reviews } from '@/mocks/reviews'
 
 const Login = lazy(() => import('@/pages/login/login'))
 const NotFound = lazy(() => import('@/components/not-found/not-found'))
