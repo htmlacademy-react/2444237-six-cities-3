@@ -4,22 +4,27 @@ import Sort from '@/components/sort/sort'
 import CardList from '@/components/card-list/card-list'
 import Map from '@/components/map/map'
 import { useState } from 'react'
-import { useAppSelector, useAppDispatch } from '@/hooks'
+import { useAppSelector } from '@/hooks'
 import { prepareOffers } from '@/utils'
 import MainEmpty from '@/components/main-empty/main-empty'
-import { SORT_TYPES, SortKeys } from '@/const'
-import { setSortType } from '@/store/action'
+import Spinner from '@/components/spinner/spinner'
+import {
+  selectCurrentCity,
+  selectCurrentSortType,
+  selectError,
+  selectIsLoading,
+  selectOffers,
+} from '@/store/selectors'
+import FullPageError from '@/components/full-page-error/full-page-error'
 
 const Main = (): JSX.Element => {
   const [selectedOfferId, setSelectedOfferId] = useState<string | null>(null)
-  const [activeSortType, setActiveSortType] = useState<string>(
-    SORT_TYPES.Popular,
-  )
 
-  const offers = useAppSelector((state) => state.offers)
-  const city = useAppSelector((state) => state.city)
-  const sortType = useAppSelector((state) => state.sortType)
-  const dispatch = useAppDispatch()
+  const offers = useAppSelector(selectOffers)
+  const city = useAppSelector(selectCurrentCity)
+  const sortType = useAppSelector(selectCurrentSortType)
+  const isLoading = useAppSelector(selectIsLoading)
+  const error = useAppSelector(selectError)
 
   const offersList = prepareOffers(offers, city, sortType)
 
@@ -28,10 +33,37 @@ const Main = (): JSX.Element => {
   const handleOfferListHover = (listOfferItemId: string | null) => {
     setSelectedOfferId(listOfferItemId)
   }
-
-  const handleSortChange = (currentSortType: SortKeys) => {
-    setActiveSortType(currentSortType)
-    dispatch(setSortType(currentSortType))
+  const renderMap = () => {
+    return (
+      <Map
+        className={'cities__map'}
+        offers={offersList}
+        activeOfferId={selectedOfferId}
+      />
+    )
+  }
+  const renderContent = () => {
+    if (isLoading) return <Spinner />
+    if (error) return <FullPageError />
+    if (isEmpty) return <MainEmpty />
+    return (
+      <div className="cities__places-container container">
+        <section className="cities__places places">
+          <h2 className="visually-hidden">Places</h2>
+          <b className="places__found">
+            {offersList.length} places to stay in {city}
+          </b>
+          <Sort activeSortType={sortType} />
+          <div className="cities__places-list places__list tabs__content">
+            <CardList
+              listOffers={offersList}
+              onCardAction={handleOfferListHover}
+            />
+          </div>
+        </section>
+        <div className="cities__right-section">{renderMap()}</div>
+      </div>
+    )
   }
 
   return (
@@ -40,37 +72,7 @@ const Main = (): JSX.Element => {
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
         <Tabs />
-        <div className="cities">
-          {isEmpty ? (
-            <MainEmpty />
-          ) : (
-            <div className="cities__places-container container">
-              <section className="cities__places places">
-                <h2 className="visually-hidden">Places</h2>
-                <b className="places__found">
-                  {offersList.length} places to stay in {city}
-                </b>
-                <Sort
-                  onSortChange={handleSortChange}
-                  activeSortType={activeSortType}
-                />
-                <div className="cities__places-list places__list tabs__content">
-                  <CardList
-                    listOffers={offersList}
-                    onCardAction={handleOfferListHover}
-                  />
-                </div>
-              </section>
-              <div className="cities__right-section">
-                <Map
-                  className={'cities__map'}
-                  offers={offersList}
-                  activeOfferId={selectedOfferId}
-                />
-              </div>
-            </div>
-          )}
-        </div>
+        <div className="cities">{renderContent()}</div>
       </main>
     </div>
   )

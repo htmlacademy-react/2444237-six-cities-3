@@ -3,8 +3,6 @@ import { lazy } from 'react'
 
 import Main from '@/pages/main/main'
 import { AppRoute } from '@/const'
-import { offers } from '@/mocks/offers'
-import { reviews } from '@/mocks/reviews'
 
 const Login = lazy(() => import('@/pages/login/login'))
 const NotFound = lazy(() => import('@/components/not-found/not-found'))
@@ -22,7 +20,7 @@ const router = createBrowserRouter([
   },
   {
     path: AppRoute.Favorites,
-    element: <Favorites items={offers} />,
+    element: <Favorites items={[]} />,
   },
   {
     path: AppRoute.NotFound,
@@ -30,7 +28,7 @@ const router = createBrowserRouter([
   },
   {
     path: AppRoute.Offer,
-    element: <Offer reviews={reviews} offers={offers} />,
+    element: <Offer reviews={[]} />,
   },
 ])
 
