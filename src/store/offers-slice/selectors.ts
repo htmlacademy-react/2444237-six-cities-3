@@ -1,10 +1,6 @@
-import { RootState } from '.'
-
-export const selectCurrentCity = (state: RootState) => state.city.city
+import { RootState } from '..'
 
 export const selectOffers = (state: RootState) => state.offers.offers
-
-export const selectCurrentSortType = (state: RootState) => state.sort.sortType
 
 export const selectIsLoading = (state: RootState) => state.offers.isLoading
 
