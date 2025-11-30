@@ -1,21 +1,23 @@
-import { offersSlice } from './offers-slice'
-import { configureStore } from '@reduxjs/toolkit'
+import { offersSlice } from './offers-slice/offers-slice'
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { createApi } from '@/services/api'
-import router from '@/router/router'
-import { citySlice } from './citySlice'
-import { sortSlice } from './sortSlice'
+import { appSlice } from './app-slice/app-slice'
+import { authSlice } from './auth/auth-slice'
+import { router } from '@/router/router'
 
 const api = createApi()
 
-export const store = configureStore({
-  reducer: {
-    offers: offersSlice.reducer,
-    city: citySlice.reducer,
-    sort: sortSlice.reducer,
-  },
+const rootSlice = combineReducers({
+  offers: offersSlice.reducer,
+  app: appSlice.reducer,
+  auth: authSlice.reducer,
+})
 
-  middleware: (getDefualtMiddleware) =>
-    getDefualtMiddleware({
+export const store = configureStore({
+  reducer: rootSlice,
+
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
       thunk: {
         extraArgument: { api, router },
       },

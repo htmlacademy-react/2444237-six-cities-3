@@ -1,6 +1,6 @@
 import { SORT_TYPES, SortKeys } from '@/const'
 import { useAppDispatch } from '@/hooks'
-import { setSortType } from '@/store/sortSlice'
+import { setSortType } from '@/store/app-slice/app-slice'
 import { useClickAway } from '@uidotdev/usehooks'
 import cn from 'classnames'
 import { useState } from 'react'

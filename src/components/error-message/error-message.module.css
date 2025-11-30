@@ -1,0 +1,10 @@
+.error {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  background-color: #b11a1a;
+  color: #fff;
+  padding: 8px;
+  font-size: 15px;
+  border-radius: 5px;
+}

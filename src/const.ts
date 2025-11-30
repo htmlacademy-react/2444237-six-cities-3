@@ -41,4 +41,6 @@ export type SortKeys = keyof typeof SORT_TYPES
 export enum APIRoute {
   Offers = '/offers',
   Favorite = '/favorite',
+  Login = '/login',
+  Logout = '/logout',
 }

@@ -1,7 +1,7 @@
 import { Offer } from '@/types/offers'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Favorite } from '@/types/favorite'
-import { fetchOffersAction } from './api-actions'
+import { fetchOffersAction } from '../api-actions'
 
 type initialState = {
   offers: Offer[]

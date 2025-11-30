@@ -1,8 +1,8 @@
 import { CITY_NAMES } from '@/const'
 import { useAppDispatch, useAppSelector } from '@/hooks'
-import { setCity } from '@/store/citySlice'
-import { selectCurrentCity } from '@/store/selectors'
 import cn from 'classnames'
+import { setCity } from '@/store/app-slice/app-slice'
+import { selectCurrentCity } from '@/store/app-slice/selectors'
 
 const Tabs = (): JSX.Element => {
   const dispatch = useAppDispatch()
