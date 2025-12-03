@@ -1,5 +1,5 @@
 import { store } from '@/store'
-import { clearErrorAction } from '@/store/api-actions'
+import { clearErrorAction } from '@/store/auth/api-actions'
 import { setError } from '@/store/auth/auth-slice'
 
 export const processErrorHandle = (message: string) => {

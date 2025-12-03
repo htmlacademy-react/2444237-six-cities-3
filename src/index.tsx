@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom/client'
 import App from './app'
 import { Provider } from 'react-redux'
 import { store } from './store'
-import { checkAuthAction, fetchOffersAction } from './store/api-actions'
 import ErrorMessage from './components/error-message/error-message'
+import { fetchOffersAction } from './store/offers-slice/api-actions'
+import { checkAuthAction } from './store/auth/api-actions'
 
 store.dispatch(fetchOffersAction())
 store.dispatch(checkAuthAction())

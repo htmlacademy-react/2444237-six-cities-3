@@ -1,46 +1,57 @@
 import Logo from '@/components/logo/logo'
 import { AppRoute } from '@/const'
 import styles from './login.module.css'
-import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import cn from 'classnames'
-import { loginAction } from '@/store/api-actions'
+import { loginAction } from '@/store/auth/api-actions'
 import { useAppDispatch } from '@/hooks'
-import { validateData, ValidationResult } from './const'
+import { useForm } from 'react-hook-form'
+import z from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+
+const loginSchema = z.object({
+  email: z.string().email('Некорректный email'),
+  password: z
+    .string()
+    .min(2, 'Пароль минимум 2 символа')
+    .refine((password) => /[a-zA-Z]/.test(password), {
+      message: 'Пароль должен содержать хотя бы одну букву',
+    })
+    .refine((password) => /\d/.test(password), {
+      message: 'Пароль должен содержать хотя бы одну цифру',
+    }),
+})
+
+type LoginData = z.infer<typeof loginSchema>
+
+const defaultValues: LoginData = {
+  email: '',
+  password: '',
+}
 
 const Login = (): JSX.Element => {
-  const emailRef = useRef<HTMLInputElement | null>(null)
-  const passwordRef = useRef<HTMLInputElement | null>(null)
-
-  const [isValidationError, setValidationError] = useState<ValidationResult>({
-    isValid: true,
-    error: null,
+  const {
+    register,
+    getValues,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<LoginData>({
+    resolver: zodResolver(loginSchema),
+    defaultValues,
+    mode: 'onChange',
+    reValidateMode: 'onChange',
   })
 
   const dispatch = useAppDispatch()
 
   const navigate = useNavigate()
 
-  const handleSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault()
-
-    if (emailRef.current !== null && passwordRef.current !== null) {
-      const formData = {
-        email: emailRef.current.value,
-        password: passwordRef.current.value,
-      }
-
-      const result = validateData(formData)
-      setValidationError(result)
-
-      if (!result.isValid) {
-        return
-      }
-
-      dispatch(loginAction(formData))
-    }
-
+    const data = getValues()
+    dispatch(loginAction(data))
     navigate(AppRoute.Main)
+    reset()
   }
 
   return (
@@ -62,41 +73,48 @@ const Login = (): JSX.Element => {
               className="login__form form"
               action="#"
               method="post"
-              onSubmit={handleSubmit}
+              onSubmit={onSubmit}
             >
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">E-mail</label>
                 <input
-                  className="login__input form__input"
+                  className={cn('login__input form__input', {
+                    [styles.error]: !!errors.email,
+                  })}
                   type="email"
-                  name="email"
                   placeholder="Email"
                   required
-                  ref={emailRef}
+                  {...register('email')}
                 />
+
+                {errors.email && (
+                  <div className={styles.error_text}>
+                    {errors.email?.message}
+                  </div>
+                )}
               </div>
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">Password</label>
                 <input
                   className={cn('login__input form__input', {
-                    [styles.error]: !isValidationError.isValid,
+                    [styles.error]: !!errors.password,
                   })}
                   type="password"
-                  name="password"
                   placeholder="Password"
                   required
-                  ref={passwordRef}
+                  {...register('password')}
                 />
 
-                {isValidationError.error !== null && (
+                {errors.password && (
                   <div className={styles.error_text}>
-                    {isValidationError.error}
+                    {errors.password?.message}
                   </div>
                 )}
               </div>
               <button
                 className="login__submit form__submit button"
                 type="submit"
+                disabled={isSubmitting}
               >
                 Sign in
               </button>

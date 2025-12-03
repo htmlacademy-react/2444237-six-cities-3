@@ -1,25 +1,17 @@
 import { AuthorizationStatus } from '@/const'
-import { checkAuthAction, loginAction, logoutAction } from '../api-actions'
+import { checkAuthAction, loginAction, logoutAction } from './api-actions'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AuthInfo } from '@/types/auth'
 
 type AuthState = {
   authorizationStatus: AuthorizationStatus
-  userInfo: AuthInfo
+  userInfo: AuthInfo | null
   error: string | null
-}
-
-const initialUserInfo = {
-  name: '',
-  avatarUrl: '',
-  isPro: false,
-  email: '',
-  token: '',
 }
 
 const initialState: AuthState = {
   authorizationStatus: AuthorizationStatus.Unknown,
-  userInfo: initialUserInfo,
+  userInfo: null,
   error: null,
 }
 
@@ -27,10 +19,6 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    loadUserInfo(state, action: PayloadAction<AuthInfo>) {
-      state.userInfo = action.payload
-    },
-
     setError(state, action: PayloadAction<string | null>) {
       state.error = action.payload
     },
@@ -40,15 +28,23 @@ export const authSlice = createSlice({
       .addCase(loginAction.pending, (state) => {
         state.authorizationStatus = AuthorizationStatus.Unknown
       })
-      .addCase(loginAction.fulfilled, (state) => {
-        state.authorizationStatus = AuthorizationStatus.Auth
-      })
+      .addCase(
+        loginAction.fulfilled,
+        (state, action: PayloadAction<AuthInfo>) => {
+          state.authorizationStatus = AuthorizationStatus.Auth
+          state.userInfo = action.payload
+        },
+      )
       .addCase(loginAction.rejected, (state) => {
         state.authorizationStatus = AuthorizationStatus.NoAuth
       })
-      .addCase(checkAuthAction.fulfilled, (state) => {
-        state.authorizationStatus = AuthorizationStatus.Auth
-      })
+      .addCase(
+        checkAuthAction.fulfilled,
+        (state, action: PayloadAction<AuthInfo>) => {
+          state.authorizationStatus = AuthorizationStatus.Auth
+          state.userInfo = action.payload
+        },
+      )
       .addCase(checkAuthAction.rejected, (state) => {
         state.authorizationStatus = AuthorizationStatus.NoAuth
       })
@@ -61,5 +57,5 @@ export const authSlice = createSlice({
   },
 })
 
-export const { loadUserInfo, setError } = authSlice.actions
+export const { setError } = authSlice.actions
 export default authSlice.reducer

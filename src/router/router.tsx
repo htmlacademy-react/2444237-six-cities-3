@@ -13,11 +13,7 @@ const Offer = lazy(() => import('@/pages/offer/offer'))
 export const router = createBrowserRouter([
   {
     path: AppRoute.Main,
-    element: (
-      <PrivateRoute>
-        <Main />
-      </PrivateRoute>
-    ),
+    element: <Main />,
   },
   {
     path: AppRoute.Login,
