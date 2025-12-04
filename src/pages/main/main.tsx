@@ -9,13 +9,15 @@ import { prepareOffers } from '@/utils'
 import MainEmpty from '@/components/main-empty/main-empty'
 import Spinner from '@/components/spinner/spinner'
 import {
-  selectCurrentCity,
-  selectCurrentSortType,
   selectError,
   selectIsLoading,
   selectOffers,
-} from '@/store/selectors'
+} from '@/store/offers-slice/selectors'
 import FullPageError from '@/components/full-page-error/full-page-error'
+import {
+  selectCurrentCity,
+  selectCurrentSortType,
+} from '@/store/app-slice/selectors'
 
 const Main = (): JSX.Element => {
   const [selectedOfferId, setSelectedOfferId] = useState<string | null>(null)

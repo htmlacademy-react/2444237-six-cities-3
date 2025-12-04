@@ -3,13 +3,14 @@ import { lazy } from 'react'
 
 import Main from '@/pages/main/main'
 import { AppRoute } from '@/const'
+import PrivateRoute from '@/components/private-route/private-route'
 
 const Login = lazy(() => import('@/pages/login/login'))
 const NotFound = lazy(() => import('@/components/not-found/not-found'))
 const Favorites = lazy(() => import('@/pages/favorites/favorites'))
 const Offer = lazy(() => import('@/pages/offer/offer'))
 
-const router = createBrowserRouter([
+export const router = createBrowserRouter([
   {
     path: AppRoute.Main,
     element: <Main />,
@@ -20,7 +21,12 @@ const router = createBrowserRouter([
   },
   {
     path: AppRoute.Favorites,
-    element: <Favorites items={[]} />,
+
+    element: (
+      <PrivateRoute>
+        <Favorites items={[]} />
+      </PrivateRoute>
+    ),
   },
   {
     path: AppRoute.NotFound,
@@ -31,5 +37,3 @@ const router = createBrowserRouter([
     element: <Offer reviews={[]} />,
   },
 ])
-
-export default router
