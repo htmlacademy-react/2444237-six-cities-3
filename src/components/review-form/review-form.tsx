@@ -1,24 +1,52 @@
-import { useState } from 'react'
 import { reviewFormRating } from './const'
+import { useForm } from 'react-hook-form'
+import z from 'zod'
+import cn from 'classnames'
+import styles from './review-form.module.css'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useAppDispatch } from '@/hooks'
+import { sentOfferComment } from '@/store/comments-slice/api-actions'
+import { Fragment } from 'react'
 
-const ReviewForm = (): JSX.Element => {
-  const [formState, setFormState] = useState({
-    rating: '0',
-    review: '',
+type ReviewFormProps = {
+  offerId: string | undefined
+}
+
+const userCommentSchema = z.object({
+  rating: z.string().min(1).max(5),
+  comment: z.string().min(50).max(300),
+})
+
+export type UserComment = z.infer<typeof userCommentSchema>
+
+const ReviewForm = ({ offerId }: ReviewFormProps): JSX.Element => {
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<UserComment>({
+    resolver: zodResolver(userCommentSchema),
+    defaultValues: {
+      comment: '',
+      rating: '0',
+    },
   })
 
-  const handleChange = (
-    evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = evt.target
-    setFormState({
-      ...formState,
-      [name]: value,
-    })
-  }
+  const dispatch = useAppDispatch()
 
-  const handleFormSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
-    evt.preventDefault()
+  const onSubmit = ({ rating, comment }: UserComment) => {
+    if (!offerId) {
+      return
+    }
+    dispatch(
+      sentOfferComment({
+        offerId,
+        comment: {
+          rating: Number(rating),
+          comment,
+        },
+      }),
+    )
   }
 
   return (
@@ -26,21 +54,26 @@ const ReviewForm = (): JSX.Element => {
       className="reviews__form form"
       action="#"
       method="post"
-      onSubmit={handleFormSubmit}
+      onSubmit={(evt) => {
+        evt.preventDefault()
+        handleSubmit(onSubmit)()
+      }}
     >
       <label className="reviews__label form__label" htmlFor="review">
         Your review
       </label>
       <div className="reviews__rating-form form__rating">
         {reviewFormRating.map((item) => (
-          <>
+          <Fragment key={item.id}>
             <input
-              className="form__rating-input visually-hidden"
-              name="rating"
-              onChange={handleChange}
-              defaultValue={item.value}
+              key={item.id}
+              className={cn('form__rating-input visually-hidden', {
+                [styles.error]: !!errors.rating,
+              })}
+              value={item.value}
               id={item.id}
               type="radio"
+              {...register('rating')}
             />
             <label
               htmlFor={item.id}
@@ -51,18 +84,24 @@ const ReviewForm = (): JSX.Element => {
                 <use xlinkHref="#icon-star" />
               </svg>
             </label>
-          </>
+          </Fragment>
         ))}
       </div>
+      {errors.rating && (
+        <div className={styles.error_text}>{errors.rating?.message}</div>
+      )}
       <textarea
-        className="reviews__textarea form__textarea"
+        className={cn('reviews__textarea form__textarea', {
+          [styles.error]: errors.comment,
+        })}
         id="review"
-        name="review"
-        onChange={handleChange}
         placeholder="Tell how was your stay, what you like and what can be improved"
         defaultValue={''}
-        value={formState.review}
+        {...register('comment')}
       />
+      {errors.comment && (
+        <div className={styles.error_text}>{errors.comment?.message}</div>
+      )}
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
           To submit review please make sure to set{' '}

@@ -8,12 +8,13 @@ import { ThunkConfig } from '@/types/thunk'
 
 export const loginAction = createAsyncThunk<AuthInfo, AuthData, ThunkConfig>(
   'user/login',
-  async ({ email, password }, { extra: { api } }) => {
+  async ({ email, password }, { extra: { api, router } }) => {
     const { data } = await api.post<AuthInfo>(APIRoute.Login, {
       email,
       password,
     })
     saveToken(data.token)
+    router.navigate(AppRoute.Main)
     return data
   },
 )

@@ -1,13 +1,12 @@
-import Logo from '@/components/logo/logo'
-import { AppRoute } from '@/const'
 import styles from './login.module.css'
-import { useNavigate } from 'react-router-dom'
 import cn from 'classnames'
 import { loginAction } from '@/store/auth/api-actions'
-import { useAppDispatch } from '@/hooks'
+import { useAppDispatch, useAppSelector } from '@/hooks'
 import { useForm } from 'react-hook-form'
 import z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { selectLoginStatus } from '@/store/auth/selectors'
+import Header from '@/components/header/header'
 
 const loginSchema = z.object({
   email: z.string().email('Некорректный email'),
@@ -24,47 +23,29 @@ const loginSchema = z.object({
 
 type LoginData = z.infer<typeof loginSchema>
 
-const defaultValues: LoginData = {
-  email: '',
-  password: '',
-}
-
 const Login = (): JSX.Element => {
   const {
     register,
-    getValues,
-    formState: { errors, isSubmitting },
-    reset,
+    handleSubmit,
+    formState: { errors },
   } = useForm<LoginData>({
     resolver: zodResolver(loginSchema),
-    defaultValues,
-    mode: 'onChange',
-    reValidateMode: 'onChange',
+    defaultValues: {
+      email: '',
+      password: '',
+    },
   })
 
   const dispatch = useAppDispatch()
+  const { isLoading } = useAppSelector(selectLoginStatus)
 
-  const navigate = useNavigate()
-
-  const onSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
-    evt.preventDefault()
-    const data = getValues()
+  const onSubmit = (data: LoginData) => {
     dispatch(loginAction(data))
-    navigate(AppRoute.Main)
-    reset()
   }
 
   return (
     <div className="page page--gray page--login">
-      <header className="header">
-        <div className="container">
-          <div className="header__wrapper">
-            <div className="header__left">
-              <Logo type="header" />
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header withUserNav={false} />
       <main className="page__main page__main--login">
         <div className="page__login-container container">
           <section className="login">
@@ -73,7 +54,10 @@ const Login = (): JSX.Element => {
               className="login__form form"
               action="#"
               method="post"
-              onSubmit={onSubmit}
+              onSubmit={(evt) => {
+                evt.preventDefault()
+                handleSubmit(onSubmit)()
+              }}
             >
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">E-mail</label>
@@ -114,9 +98,9 @@ const Login = (): JSX.Element => {
               <button
                 className="login__submit form__submit button"
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isLoading}
               >
-                Sign in
+                {isLoading ? 'Loading...' : 'Sign in'}
               </button>
             </form>
           </section>

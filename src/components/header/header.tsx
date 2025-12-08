@@ -1,7 +1,10 @@
 import UserNav from '../user-nav/user-nav'
 import Logo from '../logo/logo'
 
-const Header = (): JSX.Element => {
+type HeaderProps = {
+  withUserNav: boolean
+}
+const Header = ({ withUserNav }: HeaderProps): JSX.Element => {
   return (
     <header className="header">
       <div className="container">
@@ -9,7 +12,7 @@ const Header = (): JSX.Element => {
           <div className="header__left">
             <Logo type="header" />
           </div>
-          <UserNav />
+          {withUserNav && <UserNav />}
         </div>
       </div>
     </header>

@@ -18,13 +18,9 @@ const initialState: initialState = {
 }
 
 export const offersSlice = createSlice({
-  name: 'offers',
+  name: 'offer',
   initialState,
-  reducers: {
-    loadFavoriteOffers(state, action: PayloadAction<Favorite[]>) {
-      state.favoriteOffers = action.payload
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchOffersAction.pending, (state) => {
@@ -44,7 +40,5 @@ export const offersSlice = createSlice({
       })
   },
 })
-
-export const { loadFavoriteOffers } = offersSlice.actions
 
 export default offersSlice.reducer
