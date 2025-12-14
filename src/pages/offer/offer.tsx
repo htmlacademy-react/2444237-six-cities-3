@@ -1,27 +1,33 @@
 import { useParams } from 'react-router-dom'
-import ReviewForm from '@/components/review-form/review-form'
 import Card from '@/components/card/card'
-import { AuthorizationStatus, OfferCardClassNames } from '@/const'
+import { OfferCardClassNames } from '@/const'
 import Map from '@/components/map/map'
 import type { Offer } from '@/types/offers'
 
-import { getRatingPercent } from './utils'
+import { getNearOffers, getRatingPercent } from './utils'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import Header from '@/components/header/header'
 import { useEffect } from 'react'
 import { loadNearOffers, loadOfferInfo } from '@/store/offer-slice/api-actions'
-import { selectNearOffers, selectOffer } from '@/store/offer-slice/selectors'
+import {
+  selectNearOffers,
+  selectOffer,
+  selectOfferLoading,
+} from '@/store/offer-slice/selectors'
 import { loadOfferComments } from '@/store/comments-slice/api-actions'
-import { selectComments } from '@/store/comments-slice/selectors'
-import { selectAuthorizationStatus } from '@/store/auth/selectors'
+import FullPageError from '@/components/full-page-error/full-page-error'
+import Spinner from '@/components/spinner/spinner'
+import OfferGallery from '@/components/offer-gallery/offer-gallery'
+import OfferInside from '@/offer-inside/offer-inside'
+import OfferReviews from '@/components/offer-reviews/offer-reviews'
+import FavoriteButton from '@/components/favorite-button/favorite-button'
 
 const Offer = () => {
   const { id } = useParams<{ id: string }>()
   const dispatch = useAppDispatch()
   const offer = useAppSelector(selectOffer)
-  const nearOffers = useAppSelector(selectNearOffers)
-  const comments = useAppSelector(selectComments)
-  const authorizationStatus = useAppSelector(selectAuthorizationStatus)
+  const nearsOffers = getNearOffers(useAppSelector(selectNearOffers))
+  const isLoading = useAppSelector(selectOfferLoading)
 
   useEffect(() => {
     if (id) {
@@ -31,42 +37,35 @@ const Offer = () => {
     }
   }, [dispatch, id])
 
-  const nearOffersWithCurrentOffer = [...nearOffers, offer]
+  const nearOffersWithCurrentOffer = [...nearsOffers, offer]
 
-  if (!offer) return null
+  if (isLoading) {
+    return <Spinner />
+  }
+
+  if (!offer) {
+    return <FullPageError />
+  }
 
   return (
     <>
-      <Header withUserNav />
+      <Header />
       <main className="page__main page__main--offer">
         <section className="offer">
-          <div className="offer__gallery-container container">
-            <div className="offer__gallery">
-              {offer.images.map((image) => (
-                <div className="offer__image-wrapper" key={image}>
-                  <img className="offer__image" src={image} alt="Studio" />
-                </div>
-              ))}
-            </div>
-          </div>
+          <OfferGallery images={offer.images} />
           <div className="offer__container container">
             <div className="offer__wrapper">
               <div className="offer__mark">
                 <span>Premium</span>
               </div>
               <div className="offer__name-wrapper">
-                {offer && <h1 className="offer__name">{offer.title}</h1>}
-                <button className="offer__bookmark-button button" type="button">
-                  <svg className="offer__bookmark-icon" width={31} height={33}>
-                    <use xlinkHref="#icon-bookmark" />
-                  </svg>
-                  <span className="visually-hidden">To bookmarks</span>
-                </button>
+                <h1 className="offer__name">{offer.title}</h1>
+                <FavoriteButton type="offer" />
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
                   <span
-                    style={{ width: `${(offer.rating * 100) / 5}%` }}
+                    style={{ width: `${getRatingPercent(offer.rating)}%` }}
                   ></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
@@ -94,23 +93,14 @@ const Offer = () => {
                 {offer && <b className="offer__price-value">€{offer.price}</b>}
                 <span className="offer__price-text">&nbsp;night</span>
               </div>
-              <div className="offer__inside">
-                <h2 className="offer__inside-title">What&apos;s inside</h2>
-                <ul className="offer__inside-list">
-                  {offer.goods.map((good) => (
-                    <li key={good} className="offer__inside-item">
-                      {good}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <OfferInside goods={offer.goods} />
               <div className="offer__host">
                 <h2 className="offer__host-title">Meet the host</h2>
                 <div className="offer__host-user user">
                   <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
                     <img
                       className="offer__avatar user__avatar"
-                      src={offer.host.avatarUrl}
+                      src={offer?.host.avatarUrl}
                       width={74}
                       height={74}
                       alt="Host avatar"
@@ -125,54 +115,7 @@ const Offer = () => {
                   <p className="offer__text">{offer.description}</p>
                 </div>
               </div>
-              <section className="offer__reviews reviews">
-                <h2 className="reviews__title">
-                  Reviews ·{' '}
-                  <span className="reviews__amount">{comments.length}</span>
-                </h2>
-                <ul className="reviews__list">
-                  {comments.map((comment) => (
-                    <li
-                      key={comment.date + comment.user.name}
-                      className="reviews__item"
-                    >
-                      <div className="reviews__user user">
-                        <div className="reviews__avatar-wrapper user__avatar-wrapper">
-                          <img
-                            className="reviews__avatar user__avatar"
-                            src={comment.user.avatarUrl}
-                            width={54}
-                            height={54}
-                            alt="Reviews avatar"
-                          />
-                        </div>
-                        <span className="reviews__user-name">
-                          {comment.user.name}
-                        </span>
-                      </div>
-                      <div className="reviews__info">
-                        <div className="reviews__rating rating">
-                          <div className="reviews__stars rating__stars">
-                            <span
-                              style={{
-                                width: `${(comment.rating * 100) / 5}%`,
-                              }}
-                            />
-                            <span className="visually-hidden">Rating</span>
-                          </div>
-                        </div>
-                        <p className="reviews__text">{comment.comment}</p>
-                        <time className="reviews__time" dateTime="2019-04-24">
-                          {comment.date}
-                        </time>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-                {authorizationStatus === AuthorizationStatus.Auth && (
-                  <ReviewForm offerId={id} />
-                )}
-              </section>
+              <OfferReviews offerId={id} />
             </div>
           </div>
           <Map
@@ -187,7 +130,7 @@ const Offer = () => {
               Other places in the neighbourhood
             </h2>
             <div className="near-places__list places__list">
-              {nearOffers.map((item) => (
+              {nearsOffers.map((item) => (
                 <Card
                   key={item.id}
                   id={item.id}

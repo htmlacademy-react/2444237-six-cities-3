@@ -2,9 +2,9 @@ import UserNav from '../user-nav/user-nav'
 import Logo from '../logo/logo'
 
 type HeaderProps = {
-  withUserNav: boolean
+  withUserNav?: boolean
 }
-const Header = ({ withUserNav }: HeaderProps): JSX.Element => {
+const Header = ({ withUserNav = true }: HeaderProps): JSX.Element => {
   return (
     <header className="header">
       <div className="container">

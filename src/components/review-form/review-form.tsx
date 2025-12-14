@@ -24,6 +24,7 @@ const ReviewForm = ({ offerId }: ReviewFormProps): JSX.Element => {
     register,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm<UserComment>({
     resolver: zodResolver(userCommentSchema),
     defaultValues: {
@@ -47,6 +48,8 @@ const ReviewForm = ({ offerId }: ReviewFormProps): JSX.Element => {
         },
       }),
     )
+
+    reset()
   }
 
   return (

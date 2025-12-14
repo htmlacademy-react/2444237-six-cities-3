@@ -9,6 +9,7 @@ type initialState = {
   isLoading: boolean
   error: string | null
 }
+
 const initialState: initialState = {
   offer: null,
   nearOffers: [],
@@ -17,7 +18,7 @@ const initialState: initialState = {
 }
 
 export const offerSlice = createSlice({
-  name: 'favorite',
+  name: 'offer',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -33,7 +34,8 @@ export const offerSlice = createSlice({
         },
       )
       .addCase(loadOfferInfo.rejected, (state) => {
-        state.error = 'Unknown error'
+        state.error = 'Не удалось загрузить предложение'
+        state.isLoading = false
       })
       .addCase(
         loadNearOffers.fulfilled,
@@ -42,7 +44,7 @@ export const offerSlice = createSlice({
         },
       )
       .addCase(loadNearOffers.rejected, (state) => {
-        state.error = 'Unknown error'
+        state.error = 'Не удалось загрузить похожие предложения'
       })
   },
 })
