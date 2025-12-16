@@ -7,12 +7,14 @@ type AuthState = {
   authorizationStatus: AuthorizationStatus
   userInfo: AuthInfo | null
   error: string | null
+  loginStatus: 'idle' | 'loading' | 'succeeded' | 'error'
 }
 
 const initialState: AuthState = {
   authorizationStatus: AuthorizationStatus.Unknown,
   userInfo: null,
   error: null,
+  loginStatus: 'idle',
 }
 
 export const authSlice = createSlice({
@@ -26,7 +28,7 @@ export const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(loginAction.pending, (state) => {
-        state.authorizationStatus = AuthorizationStatus.Unknown
+        state.loginStatus = 'loading'
       })
       .addCase(
         loginAction.fulfilled,
@@ -36,7 +38,7 @@ export const authSlice = createSlice({
         },
       )
       .addCase(loginAction.rejected, (state) => {
-        state.authorizationStatus = AuthorizationStatus.NoAuth
+        state.loginStatus = 'error'
       })
       .addCase(
         checkAuthAction.fulfilled,

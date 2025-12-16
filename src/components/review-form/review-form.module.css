@@ -1,0 +1,12 @@
+.error {
+  border: 1px solid #b11a1a;
+  padding: 8px;
+  font-size: 15px;
+  border-radius: 5px;
+}
+
+.error_text {
+  color: #b11a1a;
+  margin-bottom: 15px;
+  margin-top: 0;
+}

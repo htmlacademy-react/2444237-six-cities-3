@@ -12,3 +12,13 @@ export type ThunkConfig = {
   state: RootState
   extra: ThunkExtraArguments
 }
+
+export type CommentData = {
+  rating: number
+  comment: string
+}
+
+export type SaveCommentPayload = {
+  offerId: string
+  comment: CommentData
+}

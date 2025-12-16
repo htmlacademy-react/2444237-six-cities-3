@@ -24,7 +24,7 @@ export const router = createBrowserRouter([
 
     element: (
       <PrivateRoute>
-        <Favorites items={[]} />
+        <Favorites />
       </PrivateRoute>
     ),
   },
@@ -34,6 +34,6 @@ export const router = createBrowserRouter([
   },
   {
     path: AppRoute.Offer,
-    element: <Offer reviews={[]} />,
+    element: <Offer />,
   },
 ])

@@ -4,6 +4,9 @@ import { createApi } from '@/services/api'
 import { appSlice } from './app-slice/app-slice'
 import { authSlice } from './auth/auth-slice'
 import { router } from '@/router/router'
+import { favoriteSlice } from './favorite-slice/favorite-slice'
+import { offerSlice } from './offer-slice/offer-slice'
+import { commentsSlice } from './comments-slice/comments-slice'
 
 const api = createApi()
 
@@ -11,6 +14,9 @@ const rootSlice = combineReducers({
   offers: offersSlice.reducer,
   app: appSlice.reducer,
   auth: authSlice.reducer,
+  offer: offerSlice.reducer,
+  favorite: favoriteSlice.reducer,
+  comment: commentsSlice.reducer,
 })
 
 export const store = configureStore({

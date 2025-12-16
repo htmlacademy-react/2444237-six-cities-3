@@ -48,5 +48,15 @@ export const createApi = (): AxiosInstance => {
     },
   )
 
+  // api.interceptors.response.use(
+  //   (response) => response,
+  //   (error: AxiosError<DetailMessageType>) => {
+  //     if (error.status === 404) {
+  //       toast.error('Страница не найдена')
+  //     }
+  //     return Promise.reject(error)
+  //   },
+  // )
+
   return api
 }

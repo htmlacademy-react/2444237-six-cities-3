@@ -1,11 +1,13 @@
 .loading {
-  margin: 0 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 .h1 {
-  font: 1.2em sans-serif;
-  color: #363636;
+  font: 2em sans-serif;
+  color: #000000;
   text-align: center;
-  padding: 10px;
   margin: 0;
 }

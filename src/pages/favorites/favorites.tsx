@@ -4,12 +4,12 @@ import Header from '@/components/header/header'
 import { Offer } from '@/types/offers'
 import { OfferCardClassNames } from '@/const'
 import { getRatingPercent } from '../offer/utils'
+import { useAppSelector } from '@/hooks'
+import { selectFavoriteOffers } from '@/store/favorite-slice/selectors'
 
-type FavoritesProps = {
-  items: Offer[]
-}
+const Favorites = (): JSX.Element => {
+  const items = useAppSelector(selectFavoriteOffers)
 
-const Favorites = ({ items }: FavoritesProps): JSX.Element => {
   const favoriteByCity = items
     .filter((item) => item.isFavorite)
     .reduce<Record<string, Offer[]>>((acc, offer) => {
@@ -24,7 +24,7 @@ const Favorites = ({ items }: FavoritesProps): JSX.Element => {
 
   return (
     <div className="page">
-      <Header />
+      <Header withUserNav />
       {items.length === 0 ? (
         <main className="page__main page__main--favorites page__main--favorites-empty">
           <div className="page__favorites-container container">
