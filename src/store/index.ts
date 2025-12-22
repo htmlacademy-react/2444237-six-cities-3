@@ -7,6 +7,7 @@ import { router } from '@/router/router'
 import { favoriteSlice } from './favorite-slice/favorite-slice'
 import { offerSlice } from './offer-slice/offer-slice'
 import { commentsSlice } from './comments-slice/comments-slice'
+import { notifySlice } from './notify-slice/notify-slice'
 
 const api = createApi()
 
@@ -17,6 +18,7 @@ const rootSlice = combineReducers({
   offer: offerSlice.reducer,
   favorite: favoriteSlice.reducer,
   comment: commentsSlice.reducer,
+  notify: notifySlice.reducer,
 })
 
 export const store = configureStore({

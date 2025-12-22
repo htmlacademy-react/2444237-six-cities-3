@@ -77,7 +77,7 @@ const Card = ({
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <FavoriteButton />
+          <FavoriteButton id={id} />
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
@@ -88,7 +88,9 @@ const Card = ({
         <h2 className="place-card__name">
           <a href="#">{name}</a>
         </h2>
-        <p className="place-card__type">{type}</p>
+        <p className="place-card__type">
+          {type[0].toUpperCase() + type.slice(1)}
+        </p>
       </div>
     </article>
   )

@@ -22,7 +22,7 @@ export type UserComment = z.infer<typeof userCommentSchema>
 const ReviewForm = ({ offerId }: ReviewFormProps): JSX.Element => {
   const {
     register,
-    formState: { errors },
+    formState: { errors, isValid, isSubmitting },
     handleSubmit,
     reset,
   } = useForm<UserComment>({
@@ -35,19 +35,16 @@ const ReviewForm = ({ offerId }: ReviewFormProps): JSX.Element => {
 
   const dispatch = useAppDispatch()
 
-  const onSubmit = ({ rating, comment }: UserComment) => {
+  const onSubmit = async ({ rating, comment }: UserComment) => {
     if (!offerId) {
       return
     }
-    dispatch(
+    await dispatch(
       sentOfferComment({
         offerId,
-        comment: {
-          rating: Number(rating),
-          comment,
-        },
+        comment: { rating: Number(rating), comment },
       }),
-    )
+    ).unwrap()
 
     reset()
   }
@@ -111,7 +108,11 @@ const ReviewForm = ({ offerId }: ReviewFormProps): JSX.Element => {
           <span className="reviews__star">rating</span> and describe your stay
           with at least <b className="reviews__text-amount">50 characters</b>.
         </p>
-        <button className="reviews__submit form__submit button" type="submit">
+        <button
+          className="reviews__submit form__submit button"
+          type="submit"
+          disabled={!isValid || isSubmitting}
+        >
           Submit
         </button>
       </div>

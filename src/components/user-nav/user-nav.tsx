@@ -5,12 +5,14 @@ import {
   selectAuthorizationStatus,
   selectUserInfo,
 } from '@/store/auth/selectors'
+import { selectFavoriteOffersCount } from '@/store/favorite-slice/selectors'
 import { Link } from 'react-router-dom'
 
 const UserNav = () => {
   const dispatch = useAppDispatch()
   const authStatus = useAppSelector(selectAuthorizationStatus)
   const userInfo = useAppSelector(selectUserInfo)
+  const favoriteOfferCount = useAppSelector(selectFavoriteOffersCount)
 
   const handleLogout = () => {
     dispatch(logoutAction())
@@ -24,9 +26,11 @@ const UserNav = () => {
             <a href="" className="header__nav-link header__nav-link--profile">
               <div className="header__avatar-wrapper user__avatar-wrapper"></div>
               <span className="header__user-name user__name">
-                {userInfo?.email}
+                <Link to={AppRoute.Favorites}>{userInfo?.email}</Link>
               </span>
-              <span className="header__favorite-count">3</span>
+              <span className="header__favorite-count">
+                {favoriteOfferCount}
+              </span>
             </a>
           </li>
           <li className="header__nav-item">

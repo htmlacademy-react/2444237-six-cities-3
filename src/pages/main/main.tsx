@@ -3,7 +3,7 @@ import Tabs from '@/components/tabs/tabs'
 import Sort from '@/components/sort/sort'
 import CardList from '@/components/card-list/card-list'
 import Map from '@/components/map/map'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useAppSelector } from '@/hooks'
 import { prepareOffers } from '@/utils'
 import MainEmpty from '@/components/main-empty/main-empty'
@@ -32,9 +32,10 @@ const Main = (): JSX.Element => {
 
   const isEmpty = offersList.length === 0
 
-  const handleOfferListHover = (listOfferItemId: string | null) => {
+  const handleOfferListHover = useCallback((listOfferItemId: string | null) => {
     setSelectedOfferId(listOfferItemId)
-  }
+  }, [])
+
   const renderMap = () => {
     return (
       <Map
