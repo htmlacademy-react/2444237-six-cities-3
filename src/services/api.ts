@@ -18,14 +18,5 @@ export const createApi = (): AxiosInstance => {
     return config
   })
 
-  // api.interceptors.response.use(
-  //   (config) => config,
-  //   (error: AxiosError<DetailMessageType>) => {
-  //     if (error.response && shouldDisplayError(error.response)) {
-  //       processErrorHandle(error.message)
-  //     }
-  //   },
-  // )
-
   return api
 }

@@ -37,7 +37,7 @@ export const checkAuthAction = createAsyncThunk<
 
     return data
   } catch (error) {
-    dispatch(displayErrorMessage('Необходима авторизация'))
+    dispatch(displayErrorMessage('Authorization is required'))
     throw error
   }
 })

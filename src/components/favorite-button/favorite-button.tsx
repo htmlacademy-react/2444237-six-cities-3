@@ -1,42 +1,48 @@
-import { useAppDispatch } from '@/hooks'
+import { useAppDispatch, useAppSelector } from '@/hooks'
 import { updateFavoriteOfferStatus } from '@/store/favorite-slice/api-actions'
+import { selectFavoriteOffers } from '@/store/favorite-slice/selectors'
+import cn from 'classnames'
 
 type FavoriteButtonType = {
   id: string
-  type?: 'place' | 'offer'
+  type?: 'place-card' | 'offer'
 }
 
-const FavoriteButton = ({ id, type = 'place' }: FavoriteButtonType) => {
+const sizes = {
+  'place-card': {
+    width: 18,
+    height: 19,
+  },
+  offer: {
+    width: 31,
+    height: 33,
+  },
+}
+
+const FavoriteButton = ({ id, type = 'place-card' }: FavoriteButtonType) => {
+  const favoriteOffers = useAppSelector(selectFavoriteOffers)
+  const currentOffer = favoriteOffers.find((offer) => offer.id === id)
+  
+  const {width, height} = sizes[type]
+
   const dispatch = useAppDispatch()
+
   const handleClick = () => {
     dispatch(updateFavoriteOfferStatus(id))
   }
   return (
     <>
-      {type === 'offer' && (
-        <button
-          className="offer__bookmark-button button"
+    <button className={cn("button", `${type}__bookmark-button`, {
+        [`${type}__bookmark-button--active`]: currentOffer?.isFavorite
+    })}
           type="button"
           onClick={handleClick}
         >
-          <svg className="offer__bookmark-icon" width={31} height={33}>
+          <svg className={`${type}__bookmark-icon`} width={width} height={height}>
             <use xlinkHref="#icon-bookmark" />
           </svg>
-          <span className="visually-hidden">To bookmarks</span>
+          <span className="visually-hidden">{currentOffer?.isFavorite ? 'In bookmarks' : 'To bookmarks'}</span>
         </button>
-      )}
-      {type === 'place' && (
-        <button
-          className="place-card__bookmark-button button"
-          type="button"
-          onClick={handleClick}
-        >
-          <svg className="place-card__bookmark-icon" width="18" height="19">
-            <use xlinkHref="#icon-bookmark"></use>
-          </svg>
-          <span className="visually-hidden">To bookmarks</span>
-        </button>
-      )}
     </>
   )
 }

@@ -2,10 +2,9 @@ import { ThunkExtraArguments } from '@/types/thunk'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { AppDispatch, RootState } from '..'
 import { Offer } from '@/types/offers'
-import { APIRoute } from '@/const'
+import { APIRoute, AppRoute } from '@/const'
 import {
   displaySuccessMessage,
-  displayErrorMessage,
 } from '../notify-slice/notify-slice'
 
 type ThunkConfig = {
@@ -29,28 +28,28 @@ export const updateFavoriteOfferStatus = createAsyncThunk<
   ThunkConfig
 >(
   'favorite/updateFavoriteOfferStatus',
-  async (offerId, { dispatch, getState, extra: { api } }) => {
+  async (offerId, { dispatch, getState, extra: { api, router } }) => {
     const state = getState()
 
     const offer = state.favorite.favoriteOffers.some(
       (favOffer) => favOffer.id === offerId,
     )
+
     const actionType = offer ? 0 : 1
+
     try {
       const { data } = await api.post<Offer>(
         `${APIRoute.Favorite}/${offerId}/${actionType}`,
       )
       dispatch(
         displaySuccessMessage(
-          offer ? 'Удалено из избранного' : 'Добавлено в избранное',
+          offer ? 'Deleted from favorites' : 'Added to favorites',
         ),
       )
 
       return data
     } catch (error) {
-      dispatch(
-        displayErrorMessage('Произошла ошибка при добавлении в избранное'),
-      )
+      router.navigate(AppRoute.Login)
       throw error
     }
   },
