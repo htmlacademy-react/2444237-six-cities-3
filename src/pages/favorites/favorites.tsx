@@ -23,7 +23,7 @@ const Favorites = (): JSX.Element => {
     }, {})
 
   return (
-    <div className="page">
+    <div className="page page--favorites-empty">
       <Header withUserNav />
       {items.length === 0 ? (
         <main className="page__main page__main--favorites page__main--favorites-empty">

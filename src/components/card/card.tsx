@@ -3,6 +3,7 @@ import cn from 'classnames'
 import FavoriteButton from '@/components/favorite-button/favorite-button'
 import { generatePath, Link } from 'react-router-dom'
 import { ImageClassWrapper } from './const'
+import { memo } from 'react'
 
 type CardProps = {
   id: string
@@ -19,7 +20,7 @@ type CardProps = {
   view: 'list' | 'favorites' | 'near'
 }
 
-const Card = ({
+const Card = memo(({
   id,
   image,
   price,
@@ -59,9 +60,9 @@ const Card = ({
         </Link>
       </div>
 
-      {view === 'favorites' && (
+      {view === 'favorites' && isPremium && (
         <div className="place-card__mark">
-          {isPremium && <span>Premium</span>}
+          <span>Premium</span>
         </div>
       )}
 
@@ -77,7 +78,7 @@ const Card = ({
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <FavoriteButton />
+          <FavoriteButton id={id} />
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
@@ -86,12 +87,16 @@ const Card = ({
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">{name}</a>
+          <Link to={generatePath(AppRoute.Offer, {id: `${id}`})}>
+            {name}
+          </Link>
         </h2>
-        <p className="place-card__type">{type}</p>
+        <p className="place-card__type">
+          {type[0].toUpperCase() + type.slice(1)}
+        </p>
       </div>
     </article>
   )
-}
+})
 
 export default Card

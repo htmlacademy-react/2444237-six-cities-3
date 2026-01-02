@@ -2,13 +2,14 @@ import { Offer } from '@/types/offers'
 import Card from '@/components/card/card'
 import { OfferCardClassNames } from '@/const'
 import { getRatingPercent } from '@/pages/offer/utils'
+import { memo } from 'react'
 
 type CardListProps = {
   listOffers: Offer[]
   onCardAction: (id: string | null) => void
 }
 
-const CardList = ({ listOffers, onCardAction }: CardListProps) => {
+const CardList = memo(({ listOffers, onCardAction }: CardListProps) => {
   return listOffers.map((item) => (
     <Card
       key={item.id}
@@ -25,6 +26,6 @@ const CardList = ({ listOffers, onCardAction }: CardListProps) => {
       view="list"
     />
   ))
-}
+})
 
 export default CardList

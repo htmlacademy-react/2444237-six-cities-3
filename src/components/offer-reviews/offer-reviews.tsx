@@ -3,7 +3,7 @@ import { useAppSelector } from '@/hooks'
 import { getFormatedDate, getRatingPercent } from '@/pages/offer/utils'
 import { selectAuthorizationStatus } from '@/store/auth/selectors'
 import { selectComments } from '@/store/comments-slice/selectors'
-import ReviewForm from '../review-form/review-form'
+import ReviewForm from '../comment-form/comment-form'
 
 type OfferReviewsType = {
   offerId: string | undefined

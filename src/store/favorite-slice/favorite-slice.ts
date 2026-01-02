@@ -1,6 +1,8 @@
 import { Offer } from '@/types/offers'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { loadFavoriteOffers } from './api-actions'
+import { updateFavoriteOfferStatus, loadFavoriteOffers } from './api-actions'
+
+
 
 type initialState = {
   favoriteOffers: Offer[]
@@ -16,7 +18,12 @@ const initialState: initialState = {
 export const favoriteSlice = createSlice({
   name: 'favorite',
   initialState,
-  reducers: {},
+  reducers: {
+    clearFavoriteOffers: (state) => {
+      state.favoriteOffers = []
+    }
+  },
+
   extraReducers: (builder) => {
     builder
       .addCase(loadFavoriteOffers.pending, (state) => {
@@ -34,7 +41,20 @@ export const favoriteSlice = createSlice({
         state.favoriteOffers = []
         state.error = 'Unknown error'
       })
+      .addCase(
+        updateFavoriteOfferStatus.fulfilled,
+        (state, action: PayloadAction<Offer>) => {
+          if (action.payload.isFavorite) {
+            state.favoriteOffers.push(action.payload)
+          } else {
+            state.favoriteOffers = state.favoriteOffers.filter(
+              (offer) => offer.id !== action.payload.id,
+            )
+          }
+        },
+      )
   },
 })
 
+export const { clearFavoriteOffers } = favoriteSlice.actions
 export default favoriteSlice.reducer

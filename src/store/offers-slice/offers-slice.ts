@@ -1,20 +1,17 @@
 import { Offer } from '@/types/offers'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Favorite } from '@/types/favorite'
 import { fetchOffersAction } from './api-actions'
 
 type initialState = {
   offers: Offer[]
   isLoading: boolean
   error: string | null
-  favoriteOffers: Favorite[]
 }
 
 const initialState: initialState = {
   offers: [],
   error: null,
   isLoading: false,
-  favoriteOffers: [],
 }
 
 export const offersSlice = createSlice({

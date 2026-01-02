@@ -60,7 +60,7 @@ const Offer = () => {
               </div>
               <div className="offer__name-wrapper">
                 <h1 className="offer__name">{offer.title}</h1>
-                <FavoriteButton type="offer" />
+                <FavoriteButton id={offer.id} type="offer" />
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
