@@ -55,9 +55,11 @@ const Offer = () => {
           <OfferGallery images={offer.images} />
           <div className="offer__container container">
             <div className="offer__wrapper">
-              <div className="offer__mark">
-                <span>Premium</span>
-              </div>
+              {offer.isPremium && (
+                <div className="offer__mark">
+                  <span>Premium</span>
+                </div>
+              )}
               <div className="offer__name-wrapper">
                 <h1 className="offer__name">{offer.title}</h1>
                 <FavoriteButton id={offer.id} type="offer" />
@@ -86,7 +88,7 @@ const Offer = () => {
                   {offer.bedrooms} Bedrooms
                 </li>
                 <li className="offer__feature offer__feature--adults">
-                  {offer.maxAdults} adults
+                  {`Max ${offer.maxAdults} ${offer.maxAdults > 1 ? 'adults' : 'adult'}`}
                 </li>
               </ul>
               <div className="offer__price">
@@ -97,7 +99,7 @@ const Offer = () => {
               <div className="offer__host">
                 <h2 className="offer__host-title">Meet the host</h2>
                 <div className="offer__host-user user">
-                  <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
+                  <div className={`offer__avatar-wrapper ${offer.host.isPro && 'offer__avatar-wrapper--pro'} user__avatar-wrapper`}>
                     <img
                       className="offer__avatar user__avatar"
                       src={offer?.host.avatarUrl}

@@ -2,7 +2,7 @@ import { ThunkExtraArguments } from '@/types/thunk'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { AppDispatch, RootState } from '..'
 import { Offer } from '@/types/offers'
-import { APIRoute, AppRoute } from '@/const'
+import { APIRoute } from '@/const'
 import {
   displaySuccessMessage,
 } from '../notify-slice/notify-slice'
@@ -28,7 +28,7 @@ export const updateFavoriteOfferStatus = createAsyncThunk<
   ThunkConfig
 >(
   'favorite/updateFavoriteOfferStatus',
-  async (offerId, { dispatch, getState, extra: { api, router } }) => {
+  async (offerId, { dispatch, getState, extra: { api } }) => {
     const state = getState()
 
     const offer = state.favorite.favoriteOffers.some(
@@ -49,7 +49,6 @@ export const updateFavoriteOfferStatus = createAsyncThunk<
 
       return data
     } catch (error) {
-      router.navigate(AppRoute.Login)
       throw error
     }
   },

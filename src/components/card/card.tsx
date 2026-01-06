@@ -60,7 +60,7 @@ const Card = memo(({
         </Link>
       </div>
 
-      {view === 'favorites' && isPremium && (
+      {isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
         </div>
@@ -81,7 +81,7 @@ const Card = memo(({
           <FavoriteButton id={id} />
         </div>
         <div className="place-card__rating rating">
-          <div className="place-card__stars rating__stars">
+          <div className="place-card__stars rating__stars" style={{ width: `27%` }}>
             <span style={{ width: `${rating}%` }}></span>
             <span className="visually-hidden">Rating</span>
           </div>

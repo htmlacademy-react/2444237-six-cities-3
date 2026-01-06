@@ -34,7 +34,9 @@ export const sentOfferComment = createAsyncThunk<
       )
       return data
     } catch (error) {
-      dispatch(displayErrorMessage('Произошла ошибка при отправке комментария'))
+       dispatch(
+        displayErrorMessage('Произошла ошибка при отправке комментария'),
+      ) 
       throw error
     }
   },

@@ -31,7 +31,7 @@ export const commentsSlice = createSlice({
       .addCase(
         sentOfferComment.fulfilled,
         (state, action: PayloadAction<OfferComment>) => {
-          state.comments.push(action.payload)
+          state.comments.unshift(action.payload)
         },
       )
       .addCase(sentOfferComment.rejected, (state) => {

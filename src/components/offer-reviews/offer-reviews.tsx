@@ -1,9 +1,10 @@
 import { AuthorizationStatus } from '@/const'
 import { useAppSelector } from '@/hooks'
-import { getFormatedDate, getRatingPercent } from '@/pages/offer/utils'
+import { getFormateDate, getRatingPercent } from '@/pages/offer/utils'
 import { selectAuthorizationStatus } from '@/store/auth/selectors'
 import { selectComments } from '@/store/comments-slice/selectors'
 import ReviewForm from '../comment-form/comment-form'
+import { getPrepareComments } from './utils'
 
 type OfferReviewsType = {
   offerId: string | undefined
@@ -19,7 +20,7 @@ const OfferReviews = ({ offerId }: OfferReviewsType) => {
         Reviews · <span className="reviews__amount">{comments.length}</span>
       </h2>
       <ul className="reviews__list">
-        {comments.map((comment) => (
+        {getPrepareComments(comments).map((comment) => (
           <li key={comment.date + comment.user.name} className="reviews__item">
             <div className="reviews__user user">
               <div className="reviews__avatar-wrapper user__avatar-wrapper">
@@ -46,7 +47,7 @@ const OfferReviews = ({ offerId }: OfferReviewsType) => {
               </div>
               <p className="reviews__text">{comment.comment}</p>
               <time className="reviews__time" dateTime="2019-04-24">
-                {getFormatedDate(comment.date)}
+                {getFormateDate(comment.date)}
               </time>
             </div>
           </li>

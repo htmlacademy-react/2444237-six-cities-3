@@ -6,7 +6,7 @@ import cn from 'classnames'
 import { useState } from 'react'
 
 type SortProps = {
-  activeSortType: string
+  activeSortType: SortKeys
 }
 
 const Sort = ({ activeSortType }: SortProps): JSX.Element => {
@@ -35,14 +35,13 @@ const Sort = ({ activeSortType }: SortProps): JSX.Element => {
         tabIndex={0}
         onClick={() => setIsOpen(!isOpen)}
       >
-        {activeSortType}
+        {SORT_TYPES[activeSortType]}
         <svg className="places__sorting-arrow" width="7" height="4">
           <use xlinkHref="#icon-arrow-select"></use>
         </svg>
       </span>
-      {isOpen && (
-        <ul className="places__options places__options--custom places__options--opened">
-          {(Object.keys(SORT_TYPES) as SortKeys[]).map((key) => (
+      <ul className={`places__options places__options--custom ${isOpen ? 'places__options--opened' : ''}`}>
+         {(Object.keys(SORT_TYPES) as SortKeys[]).map((key) => (
             <li
               key={key}
               className={cn('places__option', {
@@ -57,8 +56,7 @@ const Sort = ({ activeSortType }: SortProps): JSX.Element => {
               {SORT_TYPES[key]}
             </li>
           ))}
-        </ul>
-      )}
+      </ul>
     </form>
   )
 }
