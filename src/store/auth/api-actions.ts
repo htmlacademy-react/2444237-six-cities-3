@@ -31,15 +31,10 @@ export const checkAuthAction = createAsyncThunk<
   undefined,
   ThunkConfig
 >('user/checkAuth', async (_arg, { dispatch, extra: { api } }) => {
-  try {
-    const { data } = await api.get<AuthInfo>(APIRoute.Login)
+  const { data } = await api.get<AuthInfo>(APIRoute.Login)
     dispatch(loadFavoriteOffers())
 
-    return data
-  } catch (error) {
-    dispatch(displayErrorMessage('Authorization is required'))
-    throw error
-  }
+  return data
 })
 
 export const logoutAction = createAsyncThunk<void, undefined, ThunkConfig>(

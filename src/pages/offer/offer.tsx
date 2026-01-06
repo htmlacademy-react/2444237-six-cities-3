@@ -65,7 +65,7 @@ const Offer = () => {
                 <FavoriteButton id={offer.id} type="offer" />
               </div>
               <div className="offer__rating rating">
-                <div className="offer__stars rating__stars" style={{ width: '146px' }}>
+                <div className="offer__stars rating__stars">
                   <span
                     style={{ width: `${getRatingPercent(offer.rating)}%` }}
                   ></span>
@@ -88,7 +88,7 @@ const Offer = () => {
                   {offer.bedrooms} Bedrooms
                 </li>
                 <li className="offer__feature offer__feature--adults">
-                  {offer.maxAdults > 1 ? `${offer.maxAdults} adults` : `${offer.maxAdults} adult`}
+                  {`Max ${offer.maxAdults} ${offer.maxAdults > 1 ? 'adults' : 'adult'}`}
                 </li>
               </ul>
               <div className="offer__price">
@@ -99,7 +99,7 @@ const Offer = () => {
               <div className="offer__host">
                 <h2 className="offer__host-title">Meet the host</h2>
                 <div className="offer__host-user user">
-                  <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
+                  <div className={`offer__avatar-wrapper ${offer.host.isPro && 'offer__avatar-wrapper--pro'} user__avatar-wrapper`}>
                     <img
                       className="offer__avatar user__avatar"
                       src={offer?.host.avatarUrl}

@@ -22,5 +22,5 @@ export const getFormateDate = (date: string): string => {
 };
 
 export function getRatingPercent(rating: number): number {
-  return Math.round((rating / 5) * 100);
+  return (Math.round(rating) / 5) * 100;
 }

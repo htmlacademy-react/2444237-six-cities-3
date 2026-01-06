@@ -35,7 +35,9 @@ const FavoriteButton = ({ id, type = 'place-card' }: FavoriteButtonType) => {
   if (authorizationStatus !== AuthorizationStatus.Auth) {
     router.navigate(AppRoute.Login)
   }
+  else {
     dispatch(updateFavoriteOfferStatus(id))
+  }
   }
   
   return (

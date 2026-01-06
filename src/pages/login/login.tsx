@@ -8,7 +8,10 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { selectAuthorizationStatus, selectLoginStatus } from '@/store/auth/selectors'
 import Header from '@/components/header/header'
 import { AppRoute, AuthorizationStatus } from '@/const'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
+import { useMemo } from 'react'
+import { getRandomCity } from './utils'
+import { setCity } from '@/store/app-slice/app-slice'
 
 const loginSchema = z.object({
   email: z.string().email('Некорректный email'),
@@ -39,11 +42,26 @@ const Login = (): JSX.Element => {
   })
 
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const { isLoading } = useAppSelector(selectLoginStatus)
   const authorizationStatus = useAppSelector(selectAuthorizationStatus)
 
   if (authorizationStatus === AuthorizationStatus.Auth) {
     return <Navigate to={AppRoute.Main} />
+  }
+
+  const randomCity = useMemo(
+    () => getRandomCity(),
+    [],
+  )
+
+  const handleClickCity = () => {
+    if (!randomCity) {
+      return
+    }
+
+    dispatch(setCity(randomCity))
+    navigate(AppRoute.Main);
   }
 
   const onSubmit = (data: LoginData) => {
@@ -110,6 +128,13 @@ const Login = (): JSX.Element => {
                 {isLoading ? 'Loading...' : 'Sign in'}
               </button>
             </form>
+          </section>
+          <section className="locations locations--login locations--current">
+            <div className="locations__item">
+              <a className="locations__item-link" href="#" onClick={handleClickCity}>
+                <span>{randomCity}</span>
+              </a>
+            </div>
           </section>
         </div>
       </main>
