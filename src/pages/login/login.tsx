@@ -46,14 +46,15 @@ const Login = (): JSX.Element => {
   const { isLoading } = useAppSelector(selectLoginStatus)
   const authorizationStatus = useAppSelector(selectAuthorizationStatus)
 
-  if (authorizationStatus === AuthorizationStatus.Auth) {
-    return <Navigate to={AppRoute.Main} />
-  }
-
   const randomCity = useMemo(
     () => getRandomCity(),
     [],
   )
+
+  if (authorizationStatus === AuthorizationStatus.Auth) {
+    return <Navigate to={AppRoute.Main} />
+  }
+
 
   const handleClickCity = () => {
     if (!randomCity) {
