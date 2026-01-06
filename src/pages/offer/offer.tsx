@@ -55,15 +55,17 @@ const Offer = () => {
           <OfferGallery images={offer.images} />
           <div className="offer__container container">
             <div className="offer__wrapper">
-              <div className="offer__mark">
-                <span>Premium</span>
-              </div>
+              {offer.isPremium && (
+                <div className="offer__mark">
+                  <span>Premium</span>
+                </div>
+              )}
               <div className="offer__name-wrapper">
                 <h1 className="offer__name">{offer.title}</h1>
                 <FavoriteButton id={offer.id} type="offer" />
               </div>
               <div className="offer__rating rating">
-                <div className="offer__stars rating__stars">
+                <div className="offer__stars rating__stars" style={{ width: '146px' }}>
                   <span
                     style={{ width: `${getRatingPercent(offer.rating)}%` }}
                   ></span>
@@ -86,7 +88,7 @@ const Offer = () => {
                   {offer.bedrooms} Bedrooms
                 </li>
                 <li className="offer__feature offer__feature--adults">
-                  {offer.maxAdults} adults
+                  {offer.maxAdults > 1 ? `${offer.maxAdults} adults` : `${offer.maxAdults} adult`}
                 </li>
               </ul>
               <div className="offer__price">

@@ -1,4 +1,7 @@
+import { AppRoute, AuthorizationStatus } from '@/const'
 import { useAppDispatch, useAppSelector } from '@/hooks'
+import { router } from '@/router/router'
+import { selectAuthorizationStatus } from '@/store/auth/selectors'
 import { updateFavoriteOfferStatus } from '@/store/favorite-slice/api-actions'
 import { selectFavoriteOffers } from '@/store/favorite-slice/selectors'
 import cn from 'classnames'
@@ -22,14 +25,19 @@ const sizes = {
 const FavoriteButton = ({ id, type = 'place-card' }: FavoriteButtonType) => {
   const favoriteOffers = useAppSelector(selectFavoriteOffers)
   const currentOffer = favoriteOffers.find((offer) => offer.id === id)
+  const authorizationStatus = useAppSelector(selectAuthorizationStatus)
   
   const {width, height} = sizes[type]
 
   const dispatch = useAppDispatch()
 
   const handleClick = () => {
+  if (authorizationStatus !== AuthorizationStatus.Auth) {
+    router.navigate(AppRoute.Login)
+  }
     dispatch(updateFavoriteOfferStatus(id))
   }
+  
   return (
     <>
     <button className={cn("button", `${type}__bookmark-button`, {

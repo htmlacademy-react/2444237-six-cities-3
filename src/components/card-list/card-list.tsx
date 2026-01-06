@@ -21,6 +21,7 @@ const CardList = memo(({ listOffers, onCardAction }: CardListProps) => {
       width="260"
       height="200"
       type={item.type}
+      isPremium={item.isPremium}
       className={OfferCardClassNames.list}
       onCardAction={onCardAction}
       view="list"

@@ -40,9 +40,8 @@ const Sort = ({ activeSortType }: SortProps): JSX.Element => {
           <use xlinkHref="#icon-arrow-select"></use>
         </svg>
       </span>
-      {isOpen && (
-        <ul className="places__options places__options--custom places__options--opened">
-          {(Object.keys(SORT_TYPES) as SortKeys[]).map((key) => (
+      <ul className={`places__options places__options--custom ${isOpen ? 'places__options--opened' : ''}`}>
+         {(Object.keys(SORT_TYPES) as SortKeys[]).map((key) => (
             <li
               key={key}
               className={cn('places__option', {
@@ -57,8 +56,7 @@ const Sort = ({ activeSortType }: SortProps): JSX.Element => {
               {SORT_TYPES[key]}
             </li>
           ))}
-        </ul>
-      )}
+      </ul>
     </form>
   )
 }

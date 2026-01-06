@@ -7,13 +7,17 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useAppDispatch } from '@/hooks'
 import { sentOfferComment } from '@/store/comments-slice/api-actions'
 import { Fragment } from 'react'
+import { displayErrorMessage } from '@/store/notify-slice/notify-slice'
 
 type ReviewFormProps = {
   offerId: string | undefined
 }
 
 const userCommentSchema = z.object({
-  rating: z.string().min(1).max(5),
+  rating: z.string().min(1).max(5).refine((rating) => {
+    const num = Number(rating)
+    return num >= 1 && num <= 5
+  }),
   comment: z.string().min(50).max(300),
 })
 
@@ -39,14 +43,23 @@ const ReviewForm = ({ offerId }: ReviewFormProps): JSX.Element => {
     if (!offerId) {
       return
     }
-    await dispatch(
-      sentOfferComment({
-        offerId,
-        comment: { rating: Number(rating), comment },
-      }),
-    ).unwrap()
-
-    reset()
+    try {
+      await dispatch(
+        sentOfferComment({
+          offerId,
+          comment: {
+            rating: Number(rating),
+            comment,
+          },
+        }),
+      ).unwrap();
+      
+      reset()
+    } catch (error) {
+      dispatch(
+        displayErrorMessage('Произошла ошибка при отправке комментария'),
+      ) 
+    }
   }
 
   return (
@@ -73,6 +86,7 @@ const ReviewForm = ({ offerId }: ReviewFormProps): JSX.Element => {
               value={item.value}
               id={item.id}
               type="radio"
+              disabled={isSubmitting}
               {...register('rating')}
             />
             <label
@@ -97,6 +111,7 @@ const ReviewForm = ({ offerId }: ReviewFormProps): JSX.Element => {
         id="review"
         placeholder="Tell how was your stay, what you like and what can be improved"
         defaultValue={''}
+        disabled={isSubmitting}
         {...register('comment')}
       />
       {errors.comment && (

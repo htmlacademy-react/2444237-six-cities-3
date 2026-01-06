@@ -31,6 +31,7 @@ const Main = (): JSX.Element => {
   const offersList = useMemo(() => prepareOffers(offers, city, sortType), [offers, city, sortType])
 
   const isEmpty = offersList.length === 0
+  console.log(isEmpty)
 
   const handleOfferListHover = useCallback((listOfferItemId: string | null) => {
     setSelectedOfferId(listOfferItemId)
@@ -47,14 +48,15 @@ const Main = (): JSX.Element => {
   }
   const renderContent = () => {
     if (isLoading) return <Spinner />
-    if (error) return <FullPageError />
     if (isEmpty) return <MainEmpty />
+    if (error) return <FullPageError />
+
     return (
       <div className="cities__places-container container">
         <section className="cities__places places">
           <h2 className="visually-hidden">Places</h2>
           <b className="places__found">
-            {offersList.length} places to stay in {city}
+            {`${offersList.length} ${offersList.length === 1 ? 'place' : 'places'} to stay in ${city}`}
           </b>
           <Sort activeSortType={sortType} />
           <div className="cities__places-list places__list tabs__content">
@@ -70,9 +72,9 @@ const Main = (): JSX.Element => {
   }
 
   return (
-    <div className="page page--gray page--main">
+    <div className='page page--gray page--main'>
       <Header withUserNav />
-      <main className="page__main page__main--index">
+      <main className={`page__main page__main--index ${isEmpty ? 'page__main--index-empty' : ''}`}>
         <h1 className="visually-hidden">Cities</h1>
         <Tabs />
         <div className="cities">{renderContent()}</div>

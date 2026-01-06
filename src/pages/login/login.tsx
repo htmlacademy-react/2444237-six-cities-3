@@ -5,8 +5,10 @@ import { useAppDispatch, useAppSelector } from '@/hooks'
 import { useForm } from 'react-hook-form'
 import z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { selectLoginStatus } from '@/store/auth/selectors'
+import { selectAuthorizationStatus, selectLoginStatus } from '@/store/auth/selectors'
 import Header from '@/components/header/header'
+import { AppRoute, AuthorizationStatus } from '@/const'
+import { Navigate } from 'react-router-dom'
 
 const loginSchema = z.object({
   email: z.string().email('Некорректный email'),
@@ -38,6 +40,11 @@ const Login = (): JSX.Element => {
 
   const dispatch = useAppDispatch()
   const { isLoading } = useAppSelector(selectLoginStatus)
+  const authorizationStatus = useAppSelector(selectAuthorizationStatus)
+
+  if (authorizationStatus === AuthorizationStatus.Auth) {
+    return <Navigate to={AppRoute.Main} />
+  }
 
   const onSubmit = (data: LoginData) => {
     dispatch(loginAction(data))
