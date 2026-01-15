@@ -14,13 +14,13 @@ export const getNearOffers = (offers: Offer[]): Offer[] => {
 }
 
 export const getFormateDate = (date: string): string => {
-  const dateObj = new Date(date);
+  const dateObj = new Date(date)
   return dateObj.toLocaleDateString('en-US', {
-    month: 'long',  
-    year: 'numeric', 
-  });
-};
+    month: 'long',
+    year: 'numeric',
+  })
+}
 
 export function getRatingPercent(rating: number): number {
-  return (Math.round(rating) / 5) * 100;
+  return (Math.round(rating) / 5) * 100
 }

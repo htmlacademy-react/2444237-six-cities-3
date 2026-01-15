@@ -26,34 +26,34 @@ const FavoriteButton = ({ id, type = 'place-card' }: FavoriteButtonType) => {
   const favoriteOffers = useAppSelector(selectFavoriteOffers)
   const currentOffer = favoriteOffers.find((offer) => offer.id === id)
   const authorizationStatus = useAppSelector(selectAuthorizationStatus)
-  
-  const {width, height} = sizes[type]
+
+  const { width, height } = sizes[type]
 
   const dispatch = useAppDispatch()
 
   const handleClick = () => {
-  if (authorizationStatus !== AuthorizationStatus.Auth) {
-    router.navigate(AppRoute.Login)
+    if (authorizationStatus !== AuthorizationStatus.Auth) {
+      router.navigate(AppRoute.Login)
+    } else {
+      dispatch(updateFavoriteOfferStatus(id))
+    }
   }
-  else {
-    dispatch(updateFavoriteOfferStatus(id))
-  }
-  }
-  
+
   return (
-    <>
-    <button className={cn("button", `${type}__bookmark-button`, {
-        [`${type}__bookmark-button--active`]: currentOffer?.isFavorite
-    })}
-          type="button"
-          onClick={handleClick}
-        >
-          <svg className={`${type}__bookmark-icon`} width={width} height={height}>
-            <use xlinkHref="#icon-bookmark" />
-          </svg>
-          <span className="visually-hidden">{currentOffer?.isFavorite ? 'In bookmarks' : 'To bookmarks'}</span>
-        </button>
-    </>
+    <button
+      className={cn('button', `${type}__bookmark-button`, {
+        [`${type}__bookmark-button--active`]: currentOffer?.isFavorite,
+      })}
+      type="button"
+      onClick={handleClick}
+    >
+      <svg className={`${type}__bookmark-icon`} width={width} height={height}>
+        <use xlinkHref="#icon-bookmark" />
+      </svg>
+      <span className="visually-hidden">
+        {currentOffer?.isFavorite ? 'In bookmarks' : 'To bookmarks'}
+      </span>
+    </button>
   )
 }
 

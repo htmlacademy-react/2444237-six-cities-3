@@ -10,7 +10,7 @@ import { selectFavoriteOffers } from '@/store/favorite-slice/selectors'
 const Favorites = (): JSX.Element => {
   const items = useAppSelector(selectFavoriteOffers)
 
-  const favoriteByCity = items
+  const favoritesByCity = items
     .filter((item) => item.isFavorite)
     .reduce<Record<string, Offer[]>>((acc, offer) => {
       const city = offer.city.name
@@ -46,7 +46,7 @@ const Favorites = (): JSX.Element => {
             <section className="favorites">
               <h1 className="favorites__title">Saved listing</h1>
               <ul className="favorites__list">
-                {Object.entries(favoriteByCity).map(([city, cityOrders]) => (
+                {Object.entries(favoritesByCity).map(([city, cityOrders]) => (
                   <li className="favorites__locations-items" key={city}>
                     <div className="favorites__locations locations locations--current">
                       <div className="locations__item">

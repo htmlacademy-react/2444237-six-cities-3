@@ -32,7 +32,7 @@ export const checkAuthAction = createAsyncThunk<
   ThunkConfig
 >('user/checkAuth', async (_arg, { dispatch, extra: { api } }) => {
   const { data } = await api.get<AuthInfo>(APIRoute.Login)
-    dispatch(loadFavoriteOffers())
+  dispatch(loadFavoriteOffers())
 
   return data
 })

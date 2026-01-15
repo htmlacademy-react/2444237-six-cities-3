@@ -2,8 +2,6 @@ import { Offer } from '@/types/offers'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { updateFavoriteOfferStatus, loadFavoriteOffers } from './api-actions'
 
-
-
 type initialState = {
   favoriteOffers: Offer[]
   isLoading: boolean
@@ -21,7 +19,7 @@ export const favoriteSlice = createSlice({
   reducers: {
     clearFavoriteOffers: (state) => {
       state.favoriteOffers = []
-    }
+    },
   },
 
   extraReducers: (builder) => {

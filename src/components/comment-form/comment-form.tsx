@@ -14,10 +14,14 @@ type ReviewFormProps = {
 }
 
 const userCommentSchema = z.object({
-  rating: z.string().min(1).max(5).refine((rating) => {
-    const num = Number(rating)
-    return num >= 1 && num <= 5
-  }),
+  rating: z
+    .string()
+    .min(1)
+    .max(5)
+    .refine((rating) => {
+      const num = Number(rating)
+      return num >= 1 && num <= 5
+    }),
   comment: z.string().min(50).max(300),
 })
 
@@ -52,13 +56,11 @@ const ReviewForm = ({ offerId }: ReviewFormProps): JSX.Element => {
             comment,
           },
         }),
-      ).unwrap();
-      
+      ).unwrap()
+
       reset()
     } catch (error) {
-      dispatch(
-        displayErrorMessage('Произошла ошибка при отправке комментария'),
-      ) 
+      dispatch(displayErrorMessage('Произошла ошибка при отправке комментария'))
     }
   }
 

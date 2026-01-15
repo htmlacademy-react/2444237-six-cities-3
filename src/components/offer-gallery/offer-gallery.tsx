@@ -1,4 +1,4 @@
-import { MAX_GALLERY_IMAGES_COUNT } from "./const"
+import { MAX_GALLERY_IMAGES_COUNT } from './const'
 
 type OfferGalleryProps = {
   images: string[]
