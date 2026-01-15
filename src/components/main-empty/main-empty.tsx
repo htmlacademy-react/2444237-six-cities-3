@@ -1,5 +1,5 @@
-import { useAppSelector } from "@/hooks"
-import { selectCurrentCity } from "@/store/app-slice/selectors"
+import { useAppSelector } from '@/hooks'
+import { selectCurrentCity } from '@/store/app-slice/selectors'
 
 const MainEmpty = () => {
   const selectedCity = useAppSelector(selectCurrentCity)

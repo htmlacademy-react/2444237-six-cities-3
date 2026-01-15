@@ -20,83 +20,90 @@ type CardProps = {
   view: 'list' | 'favorites' | 'near'
 }
 
-const Card = memo(({
-  id,
-  image,
-  price,
-  name,
-  rating,
-  width,
-  height,
-  type,
-  className,
-  isPremium,
-  onCardAction,
-  view,
-}: CardProps): JSX.Element => {
-  const handleOnMouseEnter = () => {
-    onCardAction?.(id)
-  }
+const Card = memo(
+  ({
+    id,
+    image,
+    price,
+    name,
+    rating,
+    width,
+    height,
+    type,
+    className,
+    isPremium,
+    onCardAction,
+    view,
+  }: CardProps): JSX.Element => {
+    const handleOnMouseEnter = () => {
+      onCardAction?.(id)
+    }
 
-  const handleOnMouseLeave = () => {
-    onCardAction?.(null)
-  }
+    const handleOnMouseLeave = () => {
+      onCardAction?.(null)
+    }
 
-  return (
-    <article
-      className={`${cn(className, 'place-card')}`}
-      onMouseEnter={handleOnMouseEnter}
-      onMouseLeave={handleOnMouseLeave}
-    >
-      <div className={`${ImageClassWrapper[view]} place-card__image-wrapper`}>
-        <Link to={generatePath(AppRoute.Offer, { id: `${id}` })}>
-          <img
-            className="place-card__image"
-            src={image}
-            width={width}
-            height={height}
-            alt="Place image"
-          />
-        </Link>
-      </div>
-
-      {isPremium && (
-        <div className="place-card__mark">
-          <span>Premium</span>
-        </div>
-      )}
-
-      <div
-        className={`${cn({
-          'favorites__card-info': view === 'favorites',
-          'cities__card-info': view === 'list',
-          'place-card__info': true,
-        })}`}
+    return (
+      <article
+        className={`${cn(className, 'place-card')}`}
+        onMouseEnter={handleOnMouseEnter}
+        onMouseLeave={handleOnMouseLeave}
       >
-        <div className="place-card__price-wrapper">
-          <div className="place-card__price">
-            <b className="place-card__price-value">&euro;{price}</b>
-            <span className="place-card__price-text">&#47;&nbsp;night</span>
-          </div>
-          <FavoriteButton id={id} />
-        </div>
-        <div className="place-card__rating rating">
-          <div className="place-card__stars rating__stars" style={{ width: `27%` }}>
-            <span style={{ width: `${rating}%` }}></span>
-            <span className="visually-hidden">Rating</span>
-          </div>
-        </div>
-        <h2 className="place-card__name">
-          <Link to={generatePath(AppRoute.Offer, {id: `${id}`})}>
-            {name}
+        <div className={`${ImageClassWrapper[view]} place-card__image-wrapper`}>
+          <Link to={generatePath(AppRoute.Offer, { id: `${id}` })}>
+            <img
+              className="place-card__image"
+              src={image}
+              width={width}
+              height={height}
+              alt="Place image"
+            />
           </Link>
-        </h2>
-        <p className="place-card__type">
-          {type[0].toUpperCase() + type.slice(1)}
-        </p>
-      </div>
-    </article>
-  )
-})
+        </div>
+
+        {isPremium && (
+          <div className="place-card__mark">
+            <span>Premium</span>
+          </div>
+        )}
+
+        <div
+          className={`${cn({
+            'favorites__card-info': view === 'favorites',
+            'cities__card-info': view === 'list',
+            'place-card__info': true,
+          })}`}
+        >
+          <div className="place-card__price-wrapper">
+            <div className="place-card__price">
+              <b className="place-card__price-value">&euro;{price}</b>
+              <span className="place-card__price-text">&#47;&nbsp;night</span>
+            </div>
+            <FavoriteButton id={id} />
+          </div>
+          <div className="place-card__rating rating">
+            <div
+              className="place-card__stars rating__stars"
+              style={{ width: `27%` }}
+            >
+              <span style={{ width: `${rating}%` }}></span>
+              <span className="visually-hidden">Rating</span>
+            </div>
+          </div>
+          <h2 className="place-card__name">
+            <Link to={generatePath(AppRoute.Offer, { id: `${id}` })}>
+              {name}
+            </Link>
+          </h2>
+          <p className="place-card__type">
+            {type[0].toUpperCase() + type.slice(1)}
+          </p>
+        </div>
+      </article>
+    )
+  },
+)
+
+Card.displayName = 'Card'
 
 export default Card

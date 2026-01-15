@@ -3,9 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { AppDispatch, RootState } from '..'
 import { Offer } from '@/types/offers'
 import { APIRoute } from '@/const'
-import {
-  displaySuccessMessage,
-} from '../notify-slice/notify-slice'
+import { displaySuccessMessage } from '../notify-slice/notify-slice'
 
 type ThunkConfig = {
   dispatch: AppDispatch
@@ -30,26 +28,21 @@ export const updateFavoriteOfferStatus = createAsyncThunk<
   'favorite/updateFavoriteOfferStatus',
   async (offerId, { dispatch, getState, extra: { api } }) => {
     const state = getState()
-
     const offer = state.favorite.favoriteOffers.some(
       (favOffer) => favOffer.id === offerId,
     )
-
     const actionType = offer ? 0 : 1
 
-    try {
-      const { data } = await api.post<Offer>(
-        `${APIRoute.Favorite}/${offerId}/${actionType}`,
-      )
-      dispatch(
-        displaySuccessMessage(
-          offer ? 'Deleted from favorites' : 'Added to favorites',
-        ),
-      )
+    const { data } = await api.post<Offer>(
+      `${APIRoute.Favorite}/${offerId}/${actionType}`,
+    )
 
-      return data
-    } catch (error) {
-      throw error
-    }
+    dispatch(
+      displaySuccessMessage(
+        offer ? 'Deleted from favorites' : 'Added to favorites',
+      ),
+    )
+
+    return data
   },
 )

@@ -40,22 +40,24 @@ const Sort = ({ activeSortType }: SortProps): JSX.Element => {
           <use xlinkHref="#icon-arrow-select"></use>
         </svg>
       </span>
-      <ul className={`places__options places__options--custom ${isOpen ? 'places__options--opened' : ''}`}>
-         {(Object.keys(SORT_TYPES) as SortKeys[]).map((key) => (
-            <li
-              key={key}
-              className={cn('places__option', {
-                'places__option--active': SORT_TYPES[key] === activeSortType,
-              })}
-              tabIndex={0}
-              onClick={() => {
-                setIsOpen(false)
-                handleSortChange(key)
-              }}
-            >
-              {SORT_TYPES[key]}
-            </li>
-          ))}
+      <ul
+        className={`places__options places__options--custom ${isOpen ? 'places__options--opened' : ''}`}
+      >
+        {(Object.keys(SORT_TYPES) as SortKeys[]).map((key) => (
+          <li
+            key={key}
+            className={cn('places__option', {
+              'places__option--active': SORT_TYPES[key] === activeSortType,
+            })}
+            tabIndex={0}
+            onClick={() => {
+              setIsOpen(false)
+              handleSortChange(key)
+            }}
+          >
+            {SORT_TYPES[key]}
+          </li>
+        ))}
       </ul>
     </form>
   )

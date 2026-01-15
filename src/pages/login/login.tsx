@@ -5,7 +5,10 @@ import { useAppDispatch, useAppSelector } from '@/hooks'
 import { useForm } from 'react-hook-form'
 import z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { selectAuthorizationStatus, selectLoginStatus } from '@/store/auth/selectors'
+import {
+  selectAuthorizationStatus,
+  selectLoginStatus,
+} from '@/store/auth/selectors'
 import Header from '@/components/header/header'
 import { AppRoute, AuthorizationStatus } from '@/const'
 import { Navigate, useNavigate } from 'react-router-dom'
@@ -46,15 +49,11 @@ const Login = (): JSX.Element => {
   const { isLoading } = useAppSelector(selectLoginStatus)
   const authorizationStatus = useAppSelector(selectAuthorizationStatus)
 
-  const randomCity = useMemo(
-    () => getRandomCity(),
-    [],
-  )
+  const randomCity = useMemo(() => getRandomCity(), [])
 
   if (authorizationStatus === AuthorizationStatus.Auth) {
     return <Navigate to={AppRoute.Main} />
   }
-
 
   const handleClickCity = () => {
     if (!randomCity) {
@@ -62,7 +61,7 @@ const Login = (): JSX.Element => {
     }
 
     dispatch(setCity(randomCity))
-    navigate(AppRoute.Main);
+    navigate(AppRoute.Main)
   }
 
   const onSubmit = (data: LoginData) => {
@@ -132,7 +131,11 @@ const Login = (): JSX.Element => {
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <a className="locations__item-link" href="#" onClick={handleClickCity}>
+              <a
+                className="locations__item-link"
+                href="#"
+                onClick={handleClickCity}
+              >
                 <span>{randomCity}</span>
               </a>
             </div>

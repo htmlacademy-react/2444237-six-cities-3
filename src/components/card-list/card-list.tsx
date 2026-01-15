@@ -29,4 +29,6 @@ const CardList = memo(({ listOffers, onCardAction }: CardListProps) => {
   ))
 })
 
+CardList.displayName = 'CardList'
+
 export default CardList

@@ -28,10 +28,12 @@ const Main = (): JSX.Element => {
   const isLoading = useAppSelector(selectIsLoading)
   const error = useAppSelector(selectError)
 
-  const offersList = useMemo(() => prepareOffers(offers, city, sortType), [offers, city, sortType])
+  const offersList = useMemo(
+    () => prepareOffers(offers, city, sortType),
+    [offers, city, sortType],
+  )
 
   const isEmpty = offersList.length === 0
-  console.log(isEmpty)
 
   const handleOfferListHover = useCallback((listOfferItemId: string | null) => {
     setSelectedOfferId(listOfferItemId)
@@ -72,9 +74,11 @@ const Main = (): JSX.Element => {
   }
 
   return (
-    <div className='page page--gray page--main'>
+    <div className="page page--gray page--main">
       <Header withUserNav />
-      <main className={`page__main page__main--index ${isEmpty ? 'page__main--index-empty' : ''}`}>
+      <main
+        className={`page__main page__main--index ${isEmpty ? 'page__main--index-empty' : ''}`}
+      >
         <h1 className="visually-hidden">Cities</h1>
         <Tabs />
         <div className="cities">{renderContent()}</div>
